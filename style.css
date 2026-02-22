@@ -1,0 +1,11 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: hsla(0, 0%, 21%, 1);
+
+  background: linear-gradient(135deg, #9bb2e5, #698cbf);
+}
