@@ -127,44 +127,79 @@
 // let a = "there you go!";
 // console.log(a);
 
-
-
-
-
 // function showMessage(from, text) {
 //   from = "*" + from + "*"; // make "from" look nicer
 //   console.log(from + ": " + text);
 // }
 
-
 // let f = "Ann";
 // showMessage(); // *Ann*: Hello
 
-
 // console.log(f); // Ann
-
-
 
 // let h = 0;
 //  if (h ?? '100' ) console.log('its working!!');
 
 // console.log('first')
 
+// function showMovie() {
+//     let sum = 20 + 30;
+//     return sum;
+// }
+
+// let r= showMovie(); console.log(r);
+
+// // alert('this is it')
+// let op = "Omkar C. P."
+// let cond =+prompt('want to see the alert (t/f)', op)
+
+// if (cond) {
+//     alert('this is it')
+// } else {
+//     confirm('want to exit')
+// }
+
+// for (let i = 0; i++ < 3; ) { // shows 0, then 1, then 2
+//   console.log(i);
+// }
+
+// console.log(name2(51))
+
+// function name2(e) {
+//     return 50-e
+
+// }
+
+// let name = function(e) {
+//     return 50-e
+
+// }
+// console.log(name(51))
+
+// let num = 543543;
+// let letter = `${num}`;
+// console.log(typeof letter);
+// console.log(letter);
+
+
+// function round(val1 , val2=2, val3 = 2) {
+//     let result1 = (val1 % val2);
+//     result =Math.pow(result1,val3);
+//     return result;
+
+    
+// }
+
+// let a = round(10,7)
+// console.log(a)
 
 
 
-function showMovie() {
-    let sum = 20 + 30;
-    return sum;
+
+function sayHi() {
+  console.log("Hello");
 }
 
-let r= showMovie(); console.log(r);
 
 
-
-
-
-
-
-
-
+sayHi();
