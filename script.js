@@ -196,10 +196,13 @@
 
 
 
-function sayHi() {
-  console.log("Hello");
+function sayhello() {
+    return "hello";    
 }
 
+console.log(`${sayhello}`);
 
+console.log(sayhello)
 
-sayHi();
+sayhello();
+
