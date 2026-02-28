@@ -1,5 +1,7 @@
 // console.log('first clg');
 
+// const { cloneElement } = require("react");
+
 // [1, 2].forEach(alert);
 
 // let c ,b=2,a;
@@ -235,8 +237,6 @@
 
 // console.log(`${a}`);
 
-
-
 // let fruit =  "apple";
 // // let qu = 5;
 // let bag = {
@@ -255,22 +255,9 @@
 
 // console.log(bag['to compute'])
 
-
-// // bag 
+// // bag
 // console.log( bag.apple ); // 5 if fruit="apple"
 // console.log(bag)
-
-
-
-
-
-
-
-
-
-
-
-
 
 // function makeUser(name_, age_ , gender_= null ) {
 //   // console.log(gender_)
@@ -291,19 +278,15 @@
 //   'fav car' : 'BMW M3'
 // }
 
-
-
 // console.log(user);
-
 
 // for (let key in user) {
 
 //   console.log(key)
 
 //   console.log(user[key])
-  
-// }
 
+// }
 
 // let codes = {
 //   '+49': "Germany",
@@ -318,6 +301,50 @@
 //   console.log(code); // 1, 41, 44, 49
 // }
 
+// function add(id, age, name = null) {
+//   return {
+//     id:id,
+//     age,
+//     name,
+//   }
+// }
 
+// let user =add(45,20, 'omkar')
+
+// console.log(user)
+
+// let user = {
+//   name: "John",
+//   age: 20,
+//   // role: 'dev',
+//   size: {
+//     width: 20,
+//     height: 20,
+//   },
+// };
+
+// let clone = Object.assign({}, user);
+
+
+
+// user.size.width = 999;
+// user.age =100;
+
+
+// console.log(user);
+// console.log(clone);
+
+
+// let user ={
+//   name: "John",
+//   age: 20,
+// }
+// user.me=user;
+
+// let clone = structuredClone(user);
+
+
+// console.log(user == clone.me);
+// console.log(user.me == clone.me);
 
 
