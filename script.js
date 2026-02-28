@@ -181,28 +181,143 @@
 // console.log(typeof letter);
 // console.log(letter);
 
-
 // function round(val1 , val2=2, val3 = 2) {
 //     let result1 = (val1 % val2);
 //     result =Math.pow(result1,val3);
 //     return result;
 
-    
 // }
 
 // let a = round(10,7)
 // console.log(a)
 
+// function ask(question, yes, no) {
+//   if (confirm(question)) yes();
+//   else no();
+// }
+// ask(
+//   "Do you agree?",
+//   function() { alert("You agreed."); },
+//   function() { alert("You canceled."); }
+// );
+
+// let age =  18;
+
+// let welcome = (age < 18)
+//   ? () => alert("Hello!")
+//   : () => {alert("Greetings!")};
+
+// welcome();
+
+// console.log(welcome())
+
+// // console.log('first')
+
+// let a = {
+//   name: "Omkar",
+//   age: 20,
+//   "shoe size": 10,
+//   "fav car": "BMW M3",
+//   "age2#": 21,
+// };
+
+// console.log(a["fav car"]);
+// console.log(a["age2#"]);
+// delete a["shoe size"];
+// delete a["age2#"];
+
+// let value = 1234;
+// let key = "password 1";
+// a[key]  = value;
+// // console.log(a.password);
+
+// console.log(a);
+
+// console.log(`${a}`);
 
 
 
-function sayhello() {
-    return "hello";    
-}
+// let fruit =  "apple";
+// // let qu = 5;
+// let bag = {
+//   [fruit]: 5, // the name of the property is taken from the variable fruit
+// };
 
-console.log(`${sayhello}`);
+// let ankey= 'orange count';
+// bag[ankey] = 10;
 
-console.log(sayhello)
+// let ankey1= 'orange';
+// bag[ankey1] = "good";
 
-sayhello();
+// let compute = 'to';
+// // bag[compute + ' compute'] = 5
+// bag[`${compute} compute`] = 5
+
+// console.log(bag['to compute'])
+
+
+// // bag 
+// console.log( bag.apple ); // 5 if fruit="apple"
+// console.log(bag)
+
+
+
+
+
+
+
+
+
+
+
+
+
+// function makeUser(name_, age_ , gender_= null ) {
+//   // console.log(gender_)
+//   return {
+//     name: name_,
+//     age: age_,
+//     gender: gender_,
+//     // ...other properties
+//   };
+
+// }
+// let user = makeUser("John", 30);
+
+// let user = {
+//   '7' : 1,
+//   age : 5,
+//   // sdfd:undefined,
+//   'fav car' : 'BMW M3'
+// }
+
+
+
+// console.log(user);
+
+
+// for (let key in user) {
+
+//   console.log(key)
+
+//   console.log(user[key])
+  
+// }
+
+
+// let codes = {
+//   '+49': "Germany",
+//   '+41': "Switzerland",
+//   name : 'dfddf',
+//  '+44': "Great Britain",
+//   // ..,
+//   '+1': "USA"
+// };
+
+// for (let code in codes) {
+//   console.log(code); // 1, 41, 44, 49
+// }
+
+
+
 
