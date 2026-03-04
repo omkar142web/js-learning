@@ -504,13 +504,13 @@
 // console.log(user2)
 
 
-let parent = {
-  name: "Parent"
-};
+// let parent = {
+//   name: "Parent"
+// };
 
-let child = {
-  name: "Child",
-  parent: parent
-};
+// let child = {
+//   name: "Child",
+//   parent: parent
+// };
 
-parent.child = child;
+// parent.child = child;
