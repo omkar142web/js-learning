@@ -325,15 +325,11 @@
 
 // let clone = Object.assign({}, user);
 
-
-
 // user.size.width = 999;
 // user.age =100;
 
-
 // console.log(user);
 // console.log(clone);
-
 
 // let user ={
 //   name: "John",
@@ -343,8 +339,131 @@
 
 // let clone = structuredClone(user);
 
-
 // console.log(user == clone.me);
 // console.log(user.me == clone.me);
 
+// let user2 = {
+//   name: "OP",
+//   age: 20,
+// };
 
+// let user = {
+//   'name': "John",
+//   df: 'dsfdsd',
+//   id: 123,
+//   age: 20,
+//   role: 'dev',
+//   'key hehe': 'value ',
+//   active : true,
+//   // size: {
+//   //   width: 20,
+//   //   height: 20,
+//   // },
+// };
+
+// let para = document.getElementById('para');
+
+// for (let key in user){
+// console.log(key , user[key] );
+// para.innerText = para.innerText + `\n${key} -- ${user[key]}`;
+// }
+
+// let checki = prompt('find something in user : ', 'name')
+// // let checki = 'df'
+// if (checki in user) console.log(`Yes! ${checki} is in user`);
+// else console.log(`No! ${checki} is not in user`)
+
+let images = {
+  img1: {
+    src: "https://img.icons8.com/?size=100&id=17949&format=png&color=000000",
+    title: "Google",
+    description:
+      "Google is a multinational technology company best known for its powerful search engine. It also provides services like Gmail, Google Maps, YouTube, Google Drive, and Android. It plays a major role in organizing the world's information.",
+    link: "https://www.google.com/",
+  },
+
+  img2: {
+    src: "https://img.icons8.com/?size=100&id=118497&format=png&color=000000",
+    title: "Facebook",
+    description:
+      "Facebook is a social networking platform that allows users to connect with friends and family, share updates, photos, and videos. It also offers business tools, advertising services, and community groups worldwide.",
+    link: "https://www.facebook.com/",
+  },
+
+  img3: {
+    src: "https://img.icons8.com/?size=100&id=62856&format=png&color=000000",
+    title: "GitHub",
+    description:
+      "GitHub is a web-based platform used by developers to store, manage, and collaborate on code projects using Git version control. It is widely used for open-source contributions and professional software development.",
+    link: "https://github.com/",
+  },
+
+  img4: {
+    src: "https://img.icons8.com/?size=100&id=19318&format=png&color=000000",
+    title: "YouTube",
+    description:
+      "YouTube is a video-sharing platform where users can upload, watch, and share videos. It includes content such as tutorials, entertainment, music, gaming, and educational videos, making it one of the most visited websites globally.",
+    link: "https://www.youtube.com/",
+  },
+
+  img5: {
+    src: "https://img.icons8.com/?size=100&id=phOKFKYpe00C&format=png&color=000000",
+    title: "Twitter (X)",
+    description:
+      "Twitter, now known as X, is a microblogging platform where users share short posts called tweets. It is widely used for news updates, discussions, trending topics, and direct communication with public figures and brands.",
+    link: "https://twitter.com/",
+  },
+
+  img6: {
+    src: "https://img.icons8.com/?size=100&id=BrU2BBoRXiWq&format=png&color=000000",
+    title: "Instagram",
+    description:
+      "Instagram is a photo and video sharing social media platform focused on visual content. It allows users to post images, reels, and stories while interacting through likes, comments, and direct messages.",
+    link: "https://www.instagram.com/",
+  },
+
+  img7: {
+    src: "https://img.icons8.com/?size=100&id=13930&format=png&color=000000",
+    title: "LinkedIn",
+    description:
+      "LinkedIn is a professional networking platform where users create profiles showcasing their work experience, skills, and achievements. It is commonly used for job searching, recruitment, and business networking.",
+    link: "https://www.linkedin.com/",
+  },
+
+  img8: {
+    src: "https://img.icons8.com/?size=100&id=heQa_XKLT3nf&format=png&color=000000",
+    title: "Amazon",
+    description:
+      "Amazon is one of the largest e-commerce companies in the world. It offers online shopping, cloud computing services (AWS), digital streaming, and various consumer products across multiple countries.",
+    link: "https://www.amazon.com/",
+  },
+
+  img9: {
+    src: "https://img.icons8.com/?size=100&id=VZLXV08EcZsm&format=png&color=000000",
+    title: "Netflix",
+    description:
+      "Netflix is a subscription-based streaming service that provides movies, TV shows, documentaries, and original content. It operates globally and has transformed the way people consume entertainment.",
+    link: "https://www.netflix.com/",
+  },
+
+  img10: {
+    src: "https://img.icons8.com/?size=100&id=116726&format=png&color=000000",
+    title: "Spotify",
+    description:
+      "Spotify is a digital music streaming platform that allows users to listen to millions of songs and podcasts. It offers personalized playlists, recommendations, and offline listening options for subscribers.",
+    link: "https://www.spotify.com/",
+  },
+};
+
+let div = document.getElementById("div");
+let caption = document.getElementById("caption");
+let dis = document.getElementById("img");
+let img = document.getElementById("img");
+
+for (let key in images) {
+  div.innerHTML += `<div class="inner_div ${images[key].title}">
+      <img id="img" src="${images[key].src}" alt="" />
+      <figcaption id="caption"><a href="${images[key].link}" target="_blank">${images[key].title}</a></figcaption>
+      <p id="dis">${images[key].description}</p>
+    </div>`;
+}
