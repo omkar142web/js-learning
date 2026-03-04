@@ -29,7 +29,7 @@ body {
   align-content: center;
 }
 
-#img {
+.img {
   max-height: 100px;
 }
 
@@ -59,13 +59,24 @@ body {
 
 .inner_div:hover {
   transform: scale(1.02);
+  /* The soft drop shadow */
+  box-shadow:
+    0 0 0 1px #2b3a4a,
+    /* 1st Shadow: Acts as the solid crisp border */ 4px 4px 10px
+      rgba(0, 0, 0, 0.315);
+
+  /* The crisp dark outline seen on the cards */
+  border: 1px solid #2d2d2d;
+  background-color: hsla(212, 71%, 89%, 0.938);
+
+  cursor: pointer;
 }
 
-#dis {
+.dis {
   font-size: small;
 }
 
-#caption {
+.caption {
   font-weight: bold;
   /* color: black; */
 }
@@ -110,4 +121,9 @@ a {
 
 .Twitter {
   order: 10;
+}
+
+#heading {
+  text-align: center;
+  margin: 20px;
 }
