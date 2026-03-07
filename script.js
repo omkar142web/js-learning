@@ -817,16 +817,16 @@
 
 // heading.innerText = objlasttxt(carbyuser) + space;
 
-function User(name = "OP", age) {
+function User(name = "OP", age=23) {
   this.name = name;
   this.age = age;
 
-  if (!new.target) {
-    return new User(name, age);
-  }
+//   if (!new.target) {
+//     return new User(name, age);
+//   }
 }
 
-let u = User("op", 34);
+let u = User( 'op',11);
 
 console.log(u.name);
 console.log(u.age);
@@ -834,3 +834,4 @@ console.log(u.age);
 for (const key in u) {
   console.log(key);
 }
+
