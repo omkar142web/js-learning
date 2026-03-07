@@ -372,7 +372,7 @@
 // // let checki = 'df'
 // if (checki in user) console.log(`Yes! ${checki} is in user`);
 // else console.log(`No! ${checki} is not in user`)
-
+//  🔻 🔻 🔻 🔻 🔻 🔻 🔻 🔻 🔻 🔻 🔻 🔻
 // let images = {
 //   img1: {
 //     src: "https://img.icons8.com/?size=100&id=17949&format=png&color=000000",
@@ -475,6 +475,73 @@
 //     });
 //   });
 // }
+//  🔻 🔻 🔻 🔻 🔻 🔻 🔻 🔻 🔻 🔻 🔻 🔻
+// //  🔻 🔻 🔻 🔻 🔻 🔻 🔻 🔻 🔻 🔻 🔻 🔻
+// function ImageCard(src, title, description, link) {
+//   this.src = src;
+//   this.title = title;
+//   this.description = description;
+//   this.link = link;
+// }
+
+// let images = [
+//   img1 =new ImageCard(
+//     "https://img.icons8.com/?size=100&id=17949&format=png&color=000000",
+//     "Google",
+//     "Google is a multinational technology company best known for its powerful search engine.",
+//     "https://www.google.com/"
+//   ),
+
+//   img2 = new ImageCard(
+//     "https://img.icons8.com/?size=100&id=118497&format=png&color=000000",
+//     "Facebook",
+//     "Facebook is a social networking platform that allows users to connect with friends and family.",
+//     "https://www.facebook.com/"
+//   ),
+
+//   img3 = new ImageCard(
+//     "https://img.icons8.com/?size=100&id=62856&format=png&color=000000",
+//     "GitHub",
+//     "GitHub is a web-based platform used by developers to store and collaborate on code projects.",
+//     "https://github.com/"
+//   ),
+
+//   img4 = new ImageCard(
+//     "https://img.icons8.com/?size=100&id=19318&format=png&color=000000",
+//     "YouTube",
+//     "YouTube is a video-sharing platform where users can upload and watch videos.",
+//     "https://www.youtube.com/"
+//   ),
+
+//   img5 = new ImageCard(
+//     "https://img.icons8.com/?size=100&id=phOKFKYpe00C&format=png&color=000000",
+//     "Twitter (X)",
+//     "Twitter (X) is a microblogging platform used for short posts called tweets.",
+//     "https://twitter.com/"
+//   )
+// ];
+
+// let div = document.getElementById("div");
+
+// for (let key in images) {
+//   div.innerHTML += `<div class="inner_div ${images[key].title}">
+//       <img class="img" src="${images[key].src}" alt="" />
+//       <figcaption class="caption"><a href="${images[key].link}" target="_blank">${images[key].title}</a></figcaption>
+//       <p class="dis">${images[key].description}</p>
+//     </div>`;
+
+//   // 2️⃣ Select ALL cards
+//   let cards = document.querySelectorAll(".inner_div");
+
+//   // 3️⃣ Add event to each
+//   cards.forEach((card, index) => {
+//     card.addEventListener("click", function () {
+//       let key = Object.keys(images)[index];
+//       window.open(images[key].link, "_blank");
+//     });
+//   });
+// }
+// //  🔻 🔻 🔻 🔻 🔻 🔻 🔻 🔻 🔻 🔻 🔻 🔻
 
 // let codes = {
 //   "+49": "Germany",
@@ -486,8 +553,6 @@
 // };
 
 // console.log(codes)
-
-
 
 // let user = {
 //   name: "John",
@@ -503,7 +568,6 @@
 // user.car= 'BMW';
 // console.log(user2)
 
-
 // let parent = {
 //   name: "Parent"
 // };
@@ -514,3 +578,252 @@
 // };
 
 // parent.child = child;
+
+// let sayHi = function () {
+//   console.log("Hello!");
+// }
+
+// // works the same as below
+
+// function sayHi() {
+//   console.log("Hello!");
+// }
+
+// function sayHi(name=this.name ) {
+//     console.log(`Hello there! How are you, ${name}?`);
+//   };
+
+// let user = {
+//   name: "John",
+//   age: 20,
+//   // sayHi: (name = `${user.name}`)=> {
+//   // sayHi : function (name=this.name ) {
+//   //   console.log(`Hello there! How are you, ${name}?`);
+//   // },
+
+//   sayHi : sayHi,
+
+// };
+
+// user.sayHi();
+
+// let user2 = {
+//   name: "OP",
+//   age: 20,
+//   'sayHi to OP': sayHi,
+// };
+// user2['sayHi to OP']();
+
+// function sayHi(name = this.name) {
+//   console.log(`Hello there! How are you, ${name}?`);
+// }
+
+// let user = {
+//   name: "John",
+//   age: 20,
+//   sayHi : function (name = this.name) {
+//     console.log(`Hello there! How are you, ${name}?`);
+//   },
+// };
+
+// user.sayHi();
+
+// let user = {
+//   name: "Ilya",
+//   sayHi() {
+//     arrow = () => {
+//       console.log(`${this.name}`);
+//     };
+//     arrow();
+
+//     console.log(`${this.name}`);
+//     console.log('first')
+//   },
+// };
+
+// // user.sayHi().arrow();
+// // console.log(user2)
+// // user2.arrow()
+
+// let v =user.sayHi;
+// v();
+
+// function User(name) {
+//   this.name = name;
+//   this.isAdmin = false;
+// }
+
+// let user1 = new User("op");
+// console.log(user1);
+// console.log(user1.name);
+// console.log(user1.isAdmin);
+
+// let user2 = {...user, name : 'OP'}
+// console.log(user2)
+
+// let user3 = Object.assign({}, user, {name : 'OP'})
+// console.log(user3)
+
+// function NewCar(modal, price, id) {
+//   this.modal = modal;
+//   this.price = price;
+//   this.id = id;
+
+// }
+
+// let omni = new NewCar('M3', "4000000", 132);
+// console.log(omni);
+
+// console.log(omni.id)
+// console.log(omni.price)
+// console.log(omni.modal)
+
+// for (let key in omni) {
+//   console.log(key, omni[key]);
+
+// }
+
+// let color_generator = function () {
+//   let max = 255;
+//   let min = 0;
+//   let num = Math.floor(Math.random() * (max - min + 1)) + min;
+
+//   return num;
+// };
+// console.log(color_generator());
+
+// let para = document.getElementById("para");
+// let body = document.querySelector("body");
+
+// let changeColor = function () {
+//   let NewColor = `rgb(${color_generator()},${color_generator()},${color_generator()} , 0.8)`;
+//   body.style.backgroundColor = NewColor;
+
+//   para.innerText = NewColor;
+// };
+
+// changeColor();
+
+//   let i=0;
+
+// function nameit() {
+//   setTimeout(function () {
+//     changeColor();
+//     nameit();
+//   }, 1000);
+
+//   console.log(i++)
+// }
+// // nameit();
+
+// function NewPerson(name, age, salary) {
+//   this.name = name;
+//   this.age = age;
+//   this.salary = salary;
+//   this.car = "BMW";
+
+//   this.getconfig = function () {
+//     return `The salary of ${this.name} is ${this.salary} and is ${this.age} years old who has bought ${this.car}!`;
+//   };
+// }
+
+// let pr = new NewPerson("OP", 19, 25000000, "BMW");
+
+// // for (let key in pr) {
+// //   console.log(key)
+// // }
+
+// // console.log(" ")
+
+// // for (let key in pr) {
+// //   console.log(pr[key])
+// // }
+
+// // find number of key using function
+// // use of loop for..
+
+// // ! new func here
+// let i_;
+// function counter(counter_obj) {
+//   i_ = 0;
+//   for (let key in counter_obj) {
+//     // console.log(key);
+//     i_++;
+//   }
+
+// //   if (i > 0) {
+// //     return i + 11;
+// //   } else {
+// //     return 2;
+// //   }
+// }
+
+// // ! new func here
+// function clgobjkey_1(obj) {
+//   counter(obj);
+//   let i2 = 1;
+//   outer: for (let key in obj) {
+//     i2 = i2 + 1;
+//     if (i2 > i_) {
+//       break outer;
+//     }
+//     console.log(key);
+//     //   console.log(pr[key])
+//   }
+// }
+
+// // ! new func here
+// function objlasttxt(object) {
+//   let temp1 = 0;
+//   counter(object);
+
+//   for (let key in object) {
+//     temp1++;
+//     if (temp1 == i_) {
+//       return object[key]();
+//     }
+//   }
+// }
+
+// function Car(modal, price, id) {
+//   this.modal = modal;
+//   this.price = price;
+//   this.id = id;
+//   this.carText = function () {
+//     return `So the car modal is ${this.modal} having id ${this.id} and which costs ${this.price}`;
+//   };
+// }
+
+// let audi = new Car("unknown", 5000000, 54);
+
+// console.log(objlasttxt(audi));
+// clgobjkey_1(audi);
+
+// objlasttxt(pr);
+// clgobjkey_1(pr);
+
+// let heading = document.getElementById("heading");
+// let space = " \n"
+// heading.innerText = objlasttxt(pr) + space;
+// heading.innerText += space +objlasttxt(audi);
+
+// console.log('first')
+
+
+// let modal_P = prompt('Enter modal of car :', 'BMW M3') ;
+// let price_P = prompt('Enter price of car :', 5000000) ;
+// let id_P = prompt('Enter id of car :', 88);
+
+
+// let carbyuser = new Car(modal_P, price_P, id_P);
+
+// heading.innerText = objlasttxt(carbyuser) + space;
+
+
+
+
+function user(){
+    console.log(new.target)
+}
+
+let u = new user()
