@@ -809,36 +809,28 @@
 
 // console.log('first')
 
-
 // let modal_P = prompt('Enter modal of car :', 'BMW M3') ;
 // let price_P = prompt('Enter price of car :', 5000000) ;
 // let id_P = prompt('Enter id of car :', 88);
-
 
 // let carbyuser = new Car(modal_P, price_P, id_P);
 
 // heading.innerText = objlasttxt(carbyuser) + space;
 
+function User(name = "OP", age) {
+  this.name = name;
+  this.age = age;
 
-
-
-function User(name = 'OP', age){
-    this.name=name;
-    this.age=age;
-
-
-    if (!new.target){
-        return new User(name, age)
-    };
+  if (!new.target) {
+    return new User(name, age);
+  }
 }
 
-let u =  User('op',34)
+let u = User("op", 34);
 
-console.log(u.name)
-console.log(u.age)
+console.log(u.name);
+console.log(u.age);
 
 for (const key in u) {
-   console.log(key)
-    
-    
+  console.log(key);
 }
