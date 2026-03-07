@@ -822,8 +822,23 @@
 
 
 
-function user(){
-    console.log(new.target)
+function User(name = 'OP', age){
+    this.name=name;
+    this.age=age;
+
+
+    if (!new.target){
+        return new User(name, age)
+    };
 }
 
-let u = new user()
+let u =  User('op',34)
+
+console.log(u.name)
+console.log(u.age)
+
+for (const key in u) {
+   console.log(key)
+    
+    
+}
