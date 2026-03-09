@@ -836,7 +836,47 @@
 // }
 
 
-let a= 255;
-let b = 0o377;
-console.log(a==b)
+// let a= 255;
+// let b = 0o377;
+// console.log(a==b)
+
+
+// let num = 143;
+
+// let change = num.toString(36);
+
+// console.log(change);
+
+
+// let num = 1.2319656;
+// let r= Math.trunc(num * 100) / 100;
+// console.log(r);
+
+
+// let num = 12.25;
+// let r =num.toFixed(1) // "12.4"
+// console.log(r);
+
+// let num= 0.3
+// let r = 0.1+0.2;
+// r= r.toFixed(2);
+// console.log(r==num);
+
+// console.log(NaN == NaN)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
