@@ -835,11 +835,9 @@
 //   console.log(key);
 // }
 
-
 // let a= 255;
 // let b = 0o377;
 // console.log(a==b)
-
 
 // let num = 143;
 
@@ -847,11 +845,9 @@
 
 // console.log(change);
 
-
 // let num = 1.2319656;
 // let r= Math.trunc(num * 100) / 100;
 // console.log(r);
-
 
 // let num = 12.25;
 // let r =num.toFixed(1) // "12.4"
@@ -864,19 +860,46 @@
 
 // console.log(NaN == NaN)
 
+// let fun = function() { return'first'}
 
+// console.log(fun())
+// console.log(typeof(fun()))
 
+// let user = {
+//   name: "John",
+//   age: 20,
+// //   address: {
+// //     // city: 'Pune'
+// //   }
+// }
 
+// console.log(user.address?.city)
 
+// console.log(Math.round( 6.5))
+// console.log(Math.round(-6.5))
 
+// let num = 1.23856;
+// num = Number(num.toFixed(2));
+// console.log(num);
 
+// console.log(converter(2.455));
 
+// function converter(num) {
+//     num = Number(num.toFixed(2));
+//     return num;
+//   }
 
+// console.log(143..toString(32))
+// console.log(parseInt('4f', 32))
 
+// let value = parseInt('14.5-Km');
+// let value2 = parseFloat('14.5-Km');
+// console.log(value2 );
+// console.log(value );
 
-
-
-
-
-
-
+// let max= 20;
+// let min = 10;
+// let ran = Math.floor(Math.random() * (max - min + 1)) + min;
+// // ran = Math.round(ran);
+// //
+// console.log(ran)
