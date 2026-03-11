@@ -130,6 +130,44 @@ a {
   margin-top: 50px;
 }
 
+#inp {
+  margin-left: 20px;
+  height: 38px;
+  width: 250px;
+  border-radius: 5px;
+  border: 1px solid #2b3a4a;
+  border-right: none;
+  padding: 10px;
+  font-size: 16px;
+  outline: none;
+}
+
+#po {
+  margin-left: 20px;
+  border-radius: 5px;
+  padding: 10px;
+  font-size: 16px;
+  outline: none;
+}
+
+#po::before {
+  content: "👉 ";
+}
+
+#btnn {
+  text-align: center;
+  padding: 7px;
+  border: 1px solid #2b3a4a;
+  border-radius: 5px;
+  background-color: #35587e;
+  color: white;
+  cursor: pointer;
+  transition: all 0.1s ease;
+  font-size: small;
+  font-weight: bold;
+  width: 67px;
+}
+
 #btn {
   margin: 20px;
   text-align: center;
@@ -146,10 +184,10 @@ a {
   width: 175px;
 }
 
+#btnn:active,
 #btn:active {
-  transform: scale(0.98); 
+  transform: scale(0.98);
 }
-
 
 #para {
   margin: 20px;
@@ -176,6 +214,3 @@ a {
   flex-direction: column;
   align-items: center;
 }
-
-
-

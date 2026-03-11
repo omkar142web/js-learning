@@ -903,3 +903,76 @@
 // // ran = Math.round(ran);
 // //
 // console.log(ran)
+
+// function upper(text, value) {
+//   return text[0] + value.toUpperCase()+ text[1];
+// }
+
+// let name = "omkar";
+
+// console.log(upper`Hello ${name} how are you`);
+
+// console.log("Path: C:\\\\Users\\\\Omkar");
+
+// let str = 'omkar'
+let user = {
+  firstName: " omkar ",
+  lastName: " pandule ",
+  age: 20,
+};
+// console.log(user)
+
+function upperCreator(name_val) {
+  let name = name_val;
+  //   console.log(name_val)
+  let str = "";
+  let space_at = 0;
+  let another_w = 0;
+  let i = 0;
+  for (let char of name) {
+    //   console.log(char);
+
+    if (char == " ") {
+      space_at = name.indexOf(" ", i);
+      another_w = space_at + 1;
+      // console.log(another_w);
+    }
+
+    if (name[another_w] == char) {
+      str += char.toUpperCase();
+      // console.log(char)
+      continue;
+    }
+
+    str += char;
+    i++;
+  }
+
+  let trimmed = str.trim();
+  //   console.log(trimmed);
+  return trimmed;
+}
+
+function fullNamecreator(first_Name, last_Name) {
+  full_Name = first_Name + " " + last_Name;
+  return full_Name;
+}
+
+first_Name = upperCreator(user.firstName);
+last_Name = upperCreator(user.lastName);
+
+console.log(fullNamecreator(first_Name, last_Name));
+
+let inp = document.querySelector("#inp");
+let btn = document.querySelector("#btnn");
+let p = document.querySelector("#po");
+
+btn.onclick = function () {
+  p.innerText = upperCreator(inp.value);
+};
+
+inp.addEventListener("keydown", function (e) {
+  if (e.key === "Enter") {
+    p.innerText = upperCreator(inp.value);
+  }
+});

@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Smart Name Formatter</title>
+
+<link rel="stylesheet" href="style.css">
+<script src="script.js" defer></script>
+
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
+
+</head>
+
+<body>
+
+<header>
+<h1>✨ Smart Name Formatter</h1>
+<p class="sub">Enter your details and see the result instantly</p>
+</header>
+
+<main class="card">
+
+<form id="form">
+
+<input type="text" id="first" placeholder="First Name" required>
+
+<input type="text" id="last" placeholder="Last Name">
+
+<select id="style">
+<option value="upper">UPPERCASE</option>
+<option value="lower">lowercase</option>
+<option value="capitalize">Capitalize</option>
+</select>
+
+<button type="submit">Generate</button>
+
+</form>
+
+<div class="resultBox">
+<p id="result"></p>
+</div>
+
+</main>
+
+<footer>
+<p>JS Practice Project</p>
+</footer>
+
+</body>
+</html>
