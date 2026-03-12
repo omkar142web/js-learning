@@ -914,65 +914,67 @@
 
 // console.log("Path: C:\\\\Users\\\\Omkar");
 
-// let str = 'omkar'
-let user = {
-  firstName: " omkar ",
-  lastName: " pandule ",
-  age: 20,
-};
-// console.log(user)
+// // let str = 'omkar'
+// let user = {
+//   firstName: " omkar ",
+//   lastName: " pandule ",
+//   age: 20,
+// };
+// // console.log(user)
 
-function upperCreator(name_val) {
-  let name = name_val;
-  //   console.log(name_val)
-  let str = "";
-  let space_at = 0;
-  let another_w = 0;
-  let i = 0;
-  for (let char of name) {
-    //   console.log(char);
+// function upperCreator(name_val) {
+//   let name = name_val;
+//   //   console.log(name_val)
+//   let str = "";
+//   let space_at = 0;
+//   let another_w = 0;
+//   let i = 0;
+//   for (let char of name) {
+//     //   console.log(char);
 
-    if (char == " ") {
-      space_at = name.indexOf(" ", i);
-      another_w = space_at + 1;
-      // console.log(another_w);
-    }
+//     if (char == " ") {
+//       space_at = name.indexOf(" ", i);
+//       another_w = space_at + 1;
+//       // console.log(another_w);
+//     }
 
-    if (name[another_w] == char) {
-      str += char.toUpperCase();
-      // console.log(char)
-      continue;
-    }
+//     if (name[another_w] == char) {
+//       str += char.toUpperCase();
+//       // console.log(char)
+//       continue;
+//     }
 
-    str += char;
-    i++;
-  }
+//     str += char;
+//     i++;
+//   }
 
-  let trimmed = str.trim();
-  //   console.log(trimmed);
-  return trimmed;
-}
+//   let trimmed = str.trim();
+//   //   console.log(trimmed);
+//   return trimmed;
+// }
 
-function fullNamecreator(first_Name, last_Name) {
-  full_Name = first_Name + " " + last_Name;
-  return full_Name;
-}
+// function fullNamecreator(first_Name, last_Name) {
+//   full_Name = first_Name + " " + last_Name;
+//   return full_Name;
+// }
 
-first_Name = upperCreator(user.firstName);
-last_Name = upperCreator(user.lastName);
+// first_Name = upperCreator(user.firstName);
+// last_Name = upperCreator(user.lastName);
 
-console.log(fullNamecreator(first_Name, last_Name));
+// console.log(fullNamecreator(first_Name, last_Name));
 
-let inp = document.querySelector("#inp");
-let btn = document.querySelector("#btnn");
-let p = document.querySelector("#po");
+// let inp = document.querySelector("#inp");
+// let btn = document.querySelector("#btnn");
+// let p = document.querySelector("#po");
 
-btn.onclick = function () {
-  p.innerText = upperCreator(inp.value);
-};
+// btn.onclick = function () {
+//   p.innerText = upperCreator(inp.value);
+// };
 
-inp.addEventListener("keydown", function (e) {
-  if (e.key === "Enter") {
-    p.innerText = upperCreator(inp.value);
-  }
-});
+// inp.addEventListener("keydown", function (e) {
+//   if (e.key === "Enter") {
+//     p.innerText = upperCreator(inp.value);
+//   }
+// });
+
+
