@@ -1,52 +1,380 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  />
+  <title>Smart Name Studio</title>
 
-<title>Smart Name Formatter</title>
+  <!-- Fonts -->
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=DM+Sans:wght@400;500;600&display=swap"
+    rel="stylesheet"
+  />
 
-<link rel="stylesheet" href="style.css">
-<script src="script.js" defer></script>
+  <!-- Styles -->
+  <link rel="stylesheet" href="style.css" />
 
-<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap" rel="stylesheet">
-
+  <!-- Script -->
+  <script src="script.js" defer></script>
 </head>
+<body data-theme="dark">
+  <div class="background-layer">
+    <div class="bg-blob bg-blob-a"></div>
+    <div class="bg-blob bg-blob-b"></div>
+    <div class="bg-blob bg-blob-c"></div>
+    <div class="bg-noise"></div>
+  </div>
 
-<body>
+  <div class="app-shell">
+    <header class="topbar" aria-label="Smart Name Studio header">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <span class="brand-orb"></span>
+        </div>
+        <div class="brand-text">
+          <span class="brand-name">Smart Name Studio</span>
+          <span class="brand-tagline">Premium formatter for interface names</span>
+        </div>
+      </div>
 
-<header>
-<h1>✨ Smart Name Formatter</h1>
-<p class="sub">Enter your details and see the result instantly</p>
-</header>
+      <nav class="topbar-actions" aria-label="Global controls">
+        <div class="theme-switcher" aria-label="Theme selector">
+          <span class="theme-switcher-label">Theme</span>
+          <div class="segmented-control" role="radiogroup" aria-label="Theme">
+            <button
+              type="button"
+              class="segment is-active"
+              data-theme-value="dark"
+              role="radio"
+              aria-checked="true"
+            >
+              Dark
+            </button>
+            <button
+              type="button"
+              class="segment"
+              data-theme-value="light"
+              role="radio"
+              aria-checked="false"
+            >
+              Light
+            </button>
+            <button
+              type="button"
+              class="segment"
+              data-theme-value="glass"
+              role="radio"
+              aria-checked="false"
+            >
+              Glass
+            </button>
+            <button
+              type="button"
+              class="segment"
+              data-theme-value="neon"
+              role="radio"
+              aria-checked="false"
+            >
+              Neon
+            </button>
+            <button
+              type="button"
+              class="segment"
+              data-theme-value="minimal"
+              role="radio"
+              aria-checked="false"
+            >
+              Minimal
+            </button>
+          </div>
+        </div>
+      </nav>
+    </header>
 
-<main class="card">
+    <main class="layout" aria-labelledby="page-title">
+      <section class="stack stack-intro" aria-label="Intro">
+        <h1 id="page-title" class="page-title">
+          Design-ready names, in seconds.
+        </h1>
+        <p class="page-subtitle">
+          Experiment with casing, themes, and formats for UI copy, quickly.
+          Every change previews live, with history, exports, and power shortcuts.
+        </p>
+      </section>
 
-<form id="form">
+      <section class="layout-main">
+        <!-- Left column: input & options -->
+        <section
+          class="card card-input"
+          aria-label="Name input and formatting options"
+        >
+          <div class="card-header">
+            <h2 class="card-title">Source name</h2>
+            <p class="card-subtitle">
+              Start with a name, choose a formatter, then refine with themes.
+            </p>
+          </div>
 
-<input type="text" id="first" placeholder="First Name" required>
+          <form id="form" class="form" novalidate>
+            <div class="fields-row">
+              <div class="field-group field-group-expanded">
+                <label class="field-label" for="first">
+                  First name
+                  <span class="field-required" aria-hidden="true">*</span>
+                </label>
+                <div class="field-wrapper">
+                  <input
+                    type="text"
+                    id="first"
+                    autocomplete="given-name"
+                    placeholder="e.g. alex"
+                    required
+                    aria-required="true"
+                    spellcheck="false"
+                  />
+                </div>
+                <p class="field-hint">Required. We’ll never format an empty name.</p>
+                <p
+                  id="first-error"
+                  class="field-error"
+                  role="status"
+                  aria-live="polite"
+                ></p>
+              </div>
 
-<input type="text" id="last" placeholder="Last Name">
+              <div class="field-group">
+                <label class="field-label" for="last">
+                  Last name
+                  <span class="field-optional">Optional</span>
+                </label>
+                <div class="field-wrapper">
+                  <input
+                    type="text"
+                    id="last"
+                    autocomplete="family-name"
+                    placeholder="e.g. martin"
+                    spellcheck="false"
+                  />
+                </div>
+              </div>
+            </div>
 
-<select id="style">
-<option value="upper">UPPERCASE</option>
-<option value="lower">lowercase</option>
-<option value="capitalize">Capitalize</option>
-</select>
+            <div class="fields-row fields-row-secondary">
+              <div class="field-group field-group-format">
+                <label class="field-label" for="style">Formatting style</label>
+                <div class="field-wrapper field-select-wrapper">
+                  <select id="style" aria-label="Name formatting style">
+                    <option value="upper">UPPERCASE</option>
+                    <option value="lower">lowercase</option>
+                    <option value="capitalize" selected>Capitalize Words</option>
+                    <option value="title">Title Case</option>
+                    <option value="snake">snake_case</option>
+                    <option value="kebab">kebab-case</option>
+                    <option value="camel">camelCase</option>
+                    <option value="pascal">PascalCase</option>
+                    <option value="reverse">Reverse name</option>
+                  </select>
+                  <span class="select-indicator" aria-hidden="true"></span>
+                </div>
+                <p class="field-hint" id="style-description">
+                  Transform the same name into different code- and product-ready variants.
+                </p>
+              </div>
 
-<button type="submit">Generate</button>
+              <div class="field-group field-group-meta">
+                <div class="meta-line">
+                  <span class="meta-label">Characters</span>
+                  <span class="meta-value" id="char-count">0</span>
+                </div>
+                <div class="meta-line">
+                  <span class="meta-label">Warnings</span>
+                  <span
+                    class="meta-value meta-value-warning"
+                    id="warning-count"
+                  >
+                    0
+                  </span>
+                </div>
+              </div>
+            </div>
 
-</form>
+            <div class="validation-summary" aria-live="polite" aria-atomic="true">
+              <ul id="validation-list" class="validation-list"></ul>
+            </div>
 
-<div class="resultBox">
-<p id="result"></p>
-</div>
+            <div class="form-actions">
+              <div class="form-actions-primary">
+                <button
+                  type="submit"
+                  class="btn btn-primary"
+                  id="generate-btn"
+                >
+                  Generate
+                  <span class="kbd-hint">
+                    <span class="kbd-hint-key">Ctrl</span>
+                    <span class="kbd-hint-key">⏎</span>
+                  </span>
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-secondary"
+                  id="random-btn"
+                >
+                  Random name
+                  <span class="kbd-hint">
+                    <span class="kbd-hint-key">Ctrl</span>
+                    <span class="kbd-hint-key">R</span>
+                  </span>
+                </button>
+              </div>
 
-</main>
+              <div class="form-actions-secondary">
+                <button
+                  type="button"
+                  class="btn btn-ghost"
+                  id="clear-btn"
+                >
+                  Clear
+                  <span class="kbd-hint">
+                    <span class="kbd-hint-key">Ctrl</span>
+                    <span class="kbd-hint-key">L</span>
+                  </span>
+                </button>
+              </div>
+            </div>
+          </form>
+        </section>
 
-<footer>
-<p>JS Practice Project</p>
-</footer>
+        <!-- Right column: preview, history, export -->
+        <section
+          class="card card-preview"
+          aria-label="Formatted result, history, and exports"
+        >
+          <div class="card-header card-header-preview">
+            <div>
+              <h2 class="card-title">Live preview</h2>
+              <p class="card-subtitle">
+                Copy, reuse, or export in one click. History keeps your last runs nearby.
+              </p>
+            </div>
+            <div class="preview-meta">
+              <span class="preview-chip" id="current-style-chip">
+                Style: Capitalize Words
+              </span>
+              <span class="preview-live">
+                <span class="preview-dot" aria-hidden="true"></span>
+                <span class="preview-live-text">Live</span>
+              </span>
+            </div>
+          </div>
 
+          <div class="preview-body">
+            <div
+              class="result-frame"
+              aria-live="polite"
+              aria-atomic="true"
+            >
+              <div class="result-card" id="result-card">
+                <p id="result" class="result-text"></p>
+                <div
+                  class="result-easter-egg"
+                  id="easter-egg"
+                  aria-hidden="true"
+                >
+                  <span class="easter-text">Yeah, we know him.</span>
+                </div>
+              </div>
+              <p class="result-placeholder" id="result-placeholder">
+                Start typing a name to see your formatted result here.
+              </p>
+            </div>
+
+            <div class="result-toolbar" aria-label="Result actions">
+              <div class="result-actions-main">
+                <button
+                  type="button"
+                  class="btn btn-icon"
+                  id="copy-btn"
+                  aria-label="Copy formatted name"
+                >
+                  <span class="icon icon-copy" aria-hidden="true"></span>
+                  <span class="btn-label">Copy</span>
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-icon"
+                  id="download-btn"
+                  aria-label="Download formatted name as .txt"
+                >
+                  <span class="icon icon-download" aria-hidden="true"></span>
+                  <span class="btn-label">Download .txt</span>
+                </button>
+                <button
+                  type="button"
+                  class="btn btn-icon"
+                  id="share-btn"
+                  aria-label="Share formatted name"
+                >
+                  <span class="icon icon-share" aria-hidden="true"></span>
+                  <span class="btn-label">Share</span>
+                </button>
+              </div>
+              <div class="result-actions-info">
+                <span class="shortcut-pill">
+                  <span class="kbd">Ctrl</span><span class="kbd">C</span>
+                  <span class="shortcut-pill-text">Copy</span>
+                </span>
+              </div>
+            </div>
+
+            <div class="copy-toast" id="copy-toast" role="status" aria-live="polite">
+              Copied!
+            </div>
+          </div>
+
+          <div class="card-footer card-footer-secondary">
+            <div class="history-panel" aria-label="History of formatted names">
+              <div class="history-header">
+                <span class="history-title">Recent names</span>
+                <span class="history-count" id="history-count">0 saved</span>
+              </div>
+              <div
+                class="history-list"
+                id="history-list"
+                role="list"
+              >
+                <!-- History items injected here -->
+              </div>
+              <p class="history-empty" id="history-empty">
+                Your last 10 formatted names will appear here for quick reuse.
+              </p>
+            </div>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="app-footer">
+      <div class="footer-left">
+        <span class="footer-dot"></span>
+        <span class="footer-text">
+          Built as a micro‑product. Keyboard‑first. Accessible. Delightfully over‑designed.
+        </span>
+      </div>
+      <div class="footer-right">
+        <span class="footer-shortcut">
+          <span class="kbd">Ctrl</span><span class="kbd">⏎</span>
+          <span class="footer-shortcut-label">Generate</span>
+        </span>
+        <span class="footer-shortcut">
+          <span class="kbd">Ctrl</span><span class="kbd">R</span>
+          <span class="footer-shortcut-label">Random</span>
+        </span>
+      </div>
+    </footer>
+  </div>
 </body>
 </html>
