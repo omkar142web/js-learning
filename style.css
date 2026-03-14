@@ -126,8 +126,8 @@ a {
 #heading {
   text-align: center;
 
-  margin: 20px;
-  margin-top: 50px;
+  padding: 20px;
+  padding-top: 50px;
 }
 
 #inp {
@@ -142,7 +142,7 @@ a {
   outline: none;
 }
 
-#po {
+.po {
   margin-left: 20px;
   border-radius: 5px;
   padding: 10px;
@@ -150,7 +150,7 @@ a {
   outline: none;
 }
 
-#po::before {
+.po::before {
   content: "👉 ";
 }
 

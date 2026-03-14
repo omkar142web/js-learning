@@ -1,0 +1,1906 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Async JS Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet" />
+
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --bg: #0d0d0f;
+        --surface: #141417;
+        --surface-2: #1c1c21;
+        --border: #2a2a32;
+        --border-light: #38383f;
+        --text: #e8e6e0;
+        --text-muted: #6b6b78;
+        --text-dim: #3f3f4a;
+        --amber: #e8a338;
+        --amber-glow: rgba(232, 163, 56, 0.12);
+        --amber-dim: rgba(232, 163, 56, 0.04);
+        --green: #4dba7f;
+        --blue: #7aa0e8;
+        --red: #e05c5c;
+        --font-display: 'Playfair Display', Georgia, serif;
+        --font-mono: 'DM Mono', 'Courier New', monospace;
+        --font-body: 'DM Sans', sans-serif;
+      }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        font-family: var(--font-body);
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      body::before {
+        content: '';
+        position: fixed; inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+        pointer-events: none; z-index: 0;
+      }
+
+      /* ── HEADER ── */
+      header {
+        position: relative;
+        padding: 48px 48px 40px;
+        border-bottom: 1px solid var(--border);
+        display: flex; align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px; flex-wrap: wrap;
+        animation: fadeDown 0.6s ease both;
+      }
+      header::after {
+        content: ''; position: absolute;
+        bottom: -1px; left: 0; width: 120px; height: 1px;
+        background: var(--amber);
+      }
+      .header-left { display: flex; flex-direction: column; gap: 8px; }
+      .eyebrow {
+        font-family: var(--font-mono); font-size: 10px; font-weight: 500;
+        letter-spacing: 0.2em; text-transform: uppercase; color: var(--amber);
+      }
+      h1 {
+        font-family: var(--font-display);
+        font-size: clamp(26px, 3.5vw, 44px);
+        font-weight: 700; line-height: 1.1; letter-spacing: -0.02em;
+      }
+      h1 em { font-style: italic; color: var(--amber); }
+      .subtitle { font-size: 13px; color: var(--text-muted); font-weight: 300; margin-top: 4px; }
+
+      /* ── HEADER CONTROLS ── */
+      .header-controls { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+
+      .auto-refresh-group {
+        display: flex; align-items: center;
+        border: 1px solid var(--border-light); border-radius: 4px; overflow: hidden;
+      }
+      .auto-refresh-toggle {
+        display: flex; align-items: center; gap: 8px;
+        padding: 10px 16px; background: transparent; border: none;
+        color: var(--text-muted); font-family: var(--font-mono);
+        font-size: 10px; letter-spacing: 0.12em; text-transform: uppercase;
+        cursor: pointer; transition: all 0.2s; white-space: nowrap;
+      }
+      .auto-refresh-toggle:hover { color: var(--text); background: var(--surface-2); }
+      .auto-refresh-toggle.active { color: var(--green); background: rgba(77,186,127,0.08); }
+      .toggle-dot {
+        width: 7px; height: 7px; border-radius: 50%;
+        background: var(--text-dim); transition: background 0.2s, box-shadow 0.2s; flex-shrink: 0;
+      }
+      .auto-refresh-toggle.active .toggle-dot {
+        background: var(--green); box-shadow: 0 0 6px rgba(77,186,127,0.6);
+        animation: pulse 1.2s ease-in-out infinite;
+      }
+      .interval-select {
+        padding: 10px 10px 10px 8px; background: var(--surface-2);
+        border: none; border-left: 1px solid var(--border-light);
+        color: var(--text-muted); font-family: var(--font-mono); font-size: 10px;
+        cursor: pointer; outline: none; appearance: none; -webkit-appearance: none; letter-spacing: 0.05em;
+      }
+      .interval-select option { background: #1c1c21; }
+
+      /* Countdown ring */
+      .countdown-wrap { position: relative; width: 28px; height: 28px; flex-shrink: 0; display: none; }
+      .countdown-wrap.visible { display: block; }
+      .countdown-ring { transform: rotate(-90deg); }
+      .countdown-ring-bg { stroke: var(--border-light); }
+      .countdown-ring-fill { stroke: var(--green); stroke-linecap: round; transition: stroke-dashoffset 1s linear; }
+      .countdown-num {
+        position: absolute; inset: 0;
+        display: flex; align-items: center; justify-content: center;
+        font-family: var(--font-mono); font-size: 8px; color: var(--text-muted);
+      }
+
+      .btn-refresh {
+        display: flex; align-items: center; gap: 10px;
+        padding: 11px 22px; border: 1px solid var(--border-light);
+        background: transparent; color: var(--text); border-radius: 4px;
+        font-family: var(--font-mono); font-size: 11px; font-weight: 500;
+        letter-spacing: 0.12em; text-transform: uppercase;
+        cursor: pointer; transition: all 0.25s ease; flex-shrink: 0;
+      }
+      .btn-refresh:hover { border-color: var(--amber); color: var(--amber); background: var(--amber-dim); }
+      .btn-refresh:active { transform: scale(0.97); }
+      .btn-refresh.spinning .icon-spin { animation: spin 0.6s linear; }
+      .icon-spin { width: 14px; height: 14px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+
+      /* ── GRID ── */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1px; background: var(--border);
+      }
+
+      /* ── CARD ── */
+      .card {
+        background: var(--surface); padding: 36px;
+        display: flex; flex-direction: column; gap: 20px;
+        position: relative; overflow: hidden;
+        opacity: 0; animation: fadeUp 0.5s ease forwards;
+        transition: background 0.2s; min-height: 300px;
+      }
+      .card:hover { background: var(--surface-2); }
+      .card:nth-child(1) { animation-delay: 0.1s; }
+      .card:nth-child(2) { animation-delay: 0.2s; }
+      .card:nth-child(3) { animation-delay: 0.3s; }
+      .card::before {
+        content: ''; position: absolute; top: 0; left: 0; right: 0; height: 2px;
+        background: var(--border); transition: background 0.3s;
+      }
+      .card.loaded::before { background: var(--amber); }
+      .card.error::before  { background: var(--red); }
+
+      /* Card header */
+      .card-header { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; }
+      .card-meta { display: flex; flex-direction: column; gap: 6px; }
+      .tag {
+        display: inline-flex; align-items: center; gap: 5px;
+        font-family: var(--font-mono); font-size: 9px; font-weight: 500;
+        letter-spacing: 0.18em; text-transform: uppercase;
+        padding: 3px 8px; border-radius: 2px; width: fit-content;
+      }
+      .tag-callback { background: rgba(77,186,127,0.1); color: var(--green); }
+      .tag-promise  { background: rgba(232,163,56,0.1); color: var(--amber); }
+      .tag-async    { background: rgba(100,140,220,0.1); color: var(--blue); }
+      .tag .dot { width: 5px; height: 5px; border-radius: 50%; background: currentColor; flex-shrink: 0; }
+      .card h2 {
+        font-family: var(--font-display); font-size: 20px; font-weight: 700;
+        line-height: 1.2; letter-spacing: -0.01em;
+      }
+      .card-actions { display: flex; align-items: center; gap: 6px; flex-shrink: 0; }
+
+      /* Icon buttons */
+      .icon-btn {
+        width: 28px; height: 28px;
+        display: flex; align-items: center; justify-content: center;
+        background: transparent; border: 1px solid transparent; border-radius: 4px;
+        color: var(--text-dim); cursor: pointer; transition: all 0.2s; flex-shrink: 0;
+      }
+      .icon-btn:hover { border-color: var(--border-light); color: var(--text-muted); background: var(--surface-2); }
+      .icon-btn.active { color: var(--amber); border-color: rgba(232,163,56,0.3); background: var(--amber-dim); }
+      .icon-btn svg { width: 13px; height: 13px; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+      .icon-btn.spinning svg { animation: spin 0.5s linear; }
+      .status-dot {
+        width: 8px; height: 8px; border-radius: 50%;
+        background: var(--text-dim); flex-shrink: 0; margin-top: 6px;
+        transition: background 0.3s, box-shadow 0.3s;
+      }
+      .status-dot.loading { background: var(--amber); animation: pulse 1s ease-in-out infinite; }
+      .status-dot.ok      { background: var(--green); box-shadow: 0 0 6px rgba(77,186,127,0.5); }
+      .status-dot.err     { background: var(--red);   box-shadow: 0 0 6px rgba(224,92,92,0.5); }
+
+      /* Stats row */
+      .card-stats { display: flex; gap: 20px; font-family: var(--font-mono); }
+      .stat { display: flex; flex-direction: column; gap: 2px; }
+      .stat-label { font-size: 8px; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-dim); }
+      .stat-value { font-size: 12px; color: var(--text-muted); }
+      .stat-value.fast { color: var(--green); }
+      .stat-value.slow { color: var(--red); }
+
+      /* Card body */
+      .card-body { flex: 1; display: flex; flex-direction: column; justify-content: center; }
+      .content-text {
+        font-size: 15px; line-height: 1.75; color: var(--text-muted);
+        font-weight: 300; min-height: 80px; display: flex; align-items: center; transition: color 0.3s;
+      }
+      .content-text.loaded { color: var(--text); }
+      .content-text.error  { color: var(--red); font-size: 13px; }
+
+      /* Breed row */
+      .breed-row { display: flex; align-items: center; gap: 8px; margin-bottom: 10px; }
+      .breed-label { font-family: var(--font-mono); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim); white-space: nowrap; }
+      .breed-select {
+        flex: 1; padding: 6px 10px; background: var(--surface-2);
+        border: 1px solid var(--border-light); border-radius: 3px;
+        color: var(--text-muted); font-family: var(--font-mono); font-size: 10px;
+        outline: none; cursor: pointer; appearance: none; transition: border-color 0.2s;
+      }
+      .breed-select:focus { border-color: var(--blue); }
+      .breed-select option { background: #1c1c21; }
+
+      /* Dog image */
+      .dog-wrapper { width: 100%; aspect-ratio: 16/9; border-radius: 6px; overflow: hidden; background: var(--surface-2); position: relative; }
+      .dog-image { width: 100%; height: 100%; object-fit: cover; display: block; opacity: 0; transition: opacity 0.5s ease; }
+      .dog-image.visible { opacity: 1; }
+      .dog-placeholder { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; }
+      .skeleton {
+        height: 14px; border-radius: 3px;
+        background: linear-gradient(90deg, var(--border) 25%, var(--border-light) 50%, var(--border) 75%);
+        background-size: 200% 100%; animation: shimmer 1.4s ease infinite; margin-bottom: 10px;
+      }
+      .skeleton:last-child { width: 60%; margin-bottom: 0; }
+      .skeleton-img { width: 100%; height: 100%; background: linear-gradient(90deg, var(--border) 25%, var(--border-light) 50%, var(--border) 75%); background-size: 200% 100%; animation: shimmer 1.4s ease infinite; }
+
+      /* Card footer */
+      .card-footer { display: flex; align-items: center; justify-content: space-between; border-top: 1px solid var(--border); padding-top: 14px; }
+      .source-label { font-family: var(--font-mono); font-size: 9px; color: var(--text-dim); letter-spacing: 0.1em; text-transform: uppercase; }
+      .timestamp    { font-family: var(--font-mono); font-size: 9px; color: var(--text-dim); letter-spacing: 0.06em; }
+
+      /* ── TOAST ── */
+      .toast {
+        position: fixed; bottom: 24px; left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        background: var(--surface-2); border: 1px solid var(--border-light);
+        color: var(--text); font-family: var(--font-mono); font-size: 11px; letter-spacing: 0.08em;
+        padding: 10px 20px; border-radius: 4px;
+        opacity: 0; transition: opacity 0.2s, transform 0.2s;
+        pointer-events: none; z-index: 100; white-space: nowrap;
+      }
+      .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+      /* ── COLLAPSIBLE PANELS ── */
+      .collapse-panel { border-top: 1px solid var(--border); animation: fadeUp 0.5s ease both; opacity: 0; }
+      .collapse-panel:nth-of-type(1) { animation-delay: 0.35s; }
+      .collapse-panel:nth-of-type(2) { animation-delay: 0.4s; }
+      .collapse-panel:nth-of-type(3) { animation-delay: 0.45s; }
+
+      .collapse-header {
+        padding: 22px 48px; display: flex; align-items: center; justify-content: space-between;
+        cursor: pointer; user-select: none; border-bottom: 1px solid transparent; transition: border-color 0.2s;
+      }
+      .collapse-header:hover { border-bottom-color: var(--border); }
+      .collapse-title {
+        display: flex; align-items: center; gap: 12px;
+        font-family: var(--font-mono); font-size: 10px; letter-spacing: 0.16em;
+        text-transform: uppercase; color: var(--text-muted);
+      }
+      .collapse-body { max-height: 0; overflow: hidden; transition: max-height 0.35s ease; }
+      .collapse-body.open { max-height: 700px; }
+
+      .chevron { width: 16px; height: 16px; fill: none; stroke: var(--text-dim); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; transition: transform 0.25s; }
+      .chevron.open { transform: rotate(180deg); }
+
+      /* Badge pill */
+      .badge-pill {
+        font-size: 9px; padding: 1px 7px; border-radius: 10px; background: var(--amber-dim);
+        border: 1px solid rgba(232,163,56,0.2); color: var(--amber);
+      }
+
+      /* Live dot */
+      .live-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--green); box-shadow: 0 0 5px rgba(77,186,127,0.5); animation: pulse 2s ease-in-out infinite; }
+
+      /* ── FAVORITES ── */
+      .fav-empty { padding: 28px 48px; font-size: 13px; color: var(--text-dim); font-style: italic; }
+      .fav-list { padding: 14px 48px 28px; display: flex; flex-direction: column; gap: 8px; }
+      .fav-item {
+        display: flex; align-items: flex-start; gap: 14px;
+        padding: 14px 16px; background: var(--surface);
+        border: 1px solid var(--border); border-radius: 4px;
+        transition: border-color 0.2s; animation: slideIn 0.25s ease;
+      }
+      .fav-item:hover { border-color: var(--border-light); }
+      .fav-type { font-family: var(--font-mono); font-size: 8px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim); padding: 3px 7px; border-radius: 2px; background: var(--surface-2); white-space: nowrap; flex-shrink: 0; margin-top: 1px; }
+      .fav-text { font-size: 13px; color: var(--text-muted); flex: 1; line-height: 1.5; }
+      .fav-remove { background: none; border: none; color: var(--text-dim); cursor: pointer; font-size: 16px; padding: 0 2px; transition: color 0.2s; flex-shrink: 0; }
+      .fav-remove:hover { color: var(--red); }
+
+      /* ── ACTIVITY LOG ── */
+      .log-scroll { padding: 14px 48px 28px; max-height: 260px; overflow-y: auto; display: flex; flex-direction: column; gap: 5px; }
+      .log-scroll::-webkit-scrollbar { width: 4px; }
+      .log-scroll::-webkit-scrollbar-thumb { background: var(--border-light); border-radius: 2px; }
+      .log-entry { display: flex; align-items: baseline; gap: 12px; font-family: var(--font-mono); font-size: 11px; animation: slideIn 0.2s ease; line-height: 1.5; }
+      .log-time { color: var(--text-dim); flex-shrink: 0; font-size: 10px; }
+      .log-badge { font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; padding: 1px 6px; border-radius: 2px; flex-shrink: 0; }
+      .log-badge.ok    { background: rgba(77,186,127,0.12); color: var(--green); }
+      .log-badge.err   { background: rgba(224,92,92,0.12);  color: var(--red);   }
+      .log-badge.start { background: rgba(232,163,56,0.1);  color: var(--amber); }
+      .log-msg  { color: var(--text-muted); }
+      .log-ms   { color: var(--text-dim); margin-left: auto; flex-shrink: 0; }
+
+      /* ── PATTERN STRIP ── */
+      .pattern-strip { border-top: 1px solid var(--border); padding: 32px 48px; display: flex; gap: 32px; flex-wrap: wrap; animation: fadeUp 0.5s 0.5s ease both; opacity: 0; }
+      .pattern-item { display: flex; align-items: flex-start; gap: 12px; flex: 1; min-width: 200px; }
+      .pattern-num { font-family: var(--font-display); font-size: 36px; font-weight: 700; font-style: italic; color: var(--border-light); line-height: 1; width: 32px; flex-shrink: 0; }
+      .pattern-info { display: flex; flex-direction: column; gap: 4px; }
+      .pattern-name { font-family: var(--font-mono); font-size: 10px; font-weight: 500; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-muted); }
+      .pattern-desc { font-size: 12px; color: var(--text-dim); font-weight: 300; line-height: 1.5; max-width: 180px; }
+
+      /* ── ANIMATIONS ── */
+      @keyframes fadeDown { from { opacity:0; transform:translateY(-16px); } to { opacity:1; transform:translateY(0); } }
+      @keyframes fadeUp   { from { opacity:0; transform:translateY(16px);  } to { opacity:1; transform:translateY(0); } }
+      @keyframes shimmer  { 0%{background-position:200% 0} 100%{background-position:-200% 0} }
+      @keyframes pulse    { 0%,100%{opacity:1} 50%{opacity:.3} }
+      @keyframes spin     { from{transform:rotate(0deg)} to{transform:rotate(360deg)} }
+      @keyframes slideIn  { from{opacity:0;transform:translateY(6px)} to{opacity:1;transform:translateY(0)} }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width:640px) {
+        header,.collapse-header,.pattern-strip { padding-left:24px; padding-right:24px; }
+        .card { padding:24px; }
+        .fav-list,.log-scroll,.fav-empty { padding-left:24px; padding-right:24px; }
+        h1 { font-size:26px; }
+        .header-controls { width:100%; justify-content:flex-start; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="toast" id="toast"></div>
+
+    <!-- ── HEADER ── -->
+    <header>
+      <div class="header-left">
+        <span class="eyebrow">Live Feed</span>
+        <h1>Async <em>JavaScript</em> Dashboard</h1>
+        <p class="subtitle">Callback · Promise · Async/Await — live in the wild.</p>
+      </div>
+      <div class="header-controls">
+        <div class="auto-refresh-group">
+          <button class="auto-refresh-toggle" id="autoToggle">
+            <span class="toggle-dot"></span>Auto
+          </button>
+          <select class="interval-select" id="intervalSelect">
+            <option value="10">10s</option>
+            <option value="20">20s</option>
+            <option value="30" selected>30s</option>
+            <option value="60">60s</option>
+          </select>
+        </div>
+        <div class="countdown-wrap" id="countdownWrap">
+          <svg class="countdown-ring" width="28" height="28" viewBox="0 0 28 28">
+            <circle class="countdown-ring-bg" cx="14" cy="14" r="11" fill="none" stroke-width="2"/>
+            <circle class="countdown-ring-fill" id="countdownFill" cx="14" cy="14" r="11" fill="none" stroke-width="2" stroke-dasharray="69.1" stroke-dashoffset="0"/>
+          </svg>
+          <div class="countdown-num" id="countdownNum">—</div>
+        </div>
+        <button class="btn-refresh" id="refresh">
+          <svg class="icon-spin" viewBox="0 0 24 24">
+            <path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/>
+            <path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/>
+          </svg>
+          Refresh All
+        </button>
+      </div>
+    </header>
+
+    <!-- ── CARDS ── -->
+    <div class="grid">
+
+      <!-- JOKE (Callback) -->
+      <div class="card" id="card-joke">
+        <div class="card-header">
+          <div class="card-meta">
+            <span class="tag tag-callback"><span class="dot"></span>Callback</span>
+            <h2>Random Joke</h2>
+          </div>
+          <div class="card-actions">
+            <button class="icon-btn" id="fav-joke" title="Save to favorites">
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <button class="icon-btn" id="copy-joke" title="Copy">
+              <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+            <button class="icon-btn" id="reload-joke" title="Reload">
+              <svg viewBox="0 0 24 24"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+            </button>
+            <div class="status-dot" id="status-joke"></div>
+          </div>
+        </div>
+        <div class="card-stats">
+          <div class="stat"><span class="stat-label">Fetches</span><span class="stat-value" id="count-joke">0</span></div>
+          <div class="stat"><span class="stat-label">Last ms</span><span class="stat-value" id="ms-joke">—</span></div>
+        </div>
+        <div class="card-body">
+          <div class="content-text" id="joke">
+            <div style="width:100%"><div class="skeleton"></div><div class="skeleton"></div></div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="source-label">official-joke-api.appspot.com</span>
+          <span class="timestamp" id="ts-joke">—</span>
+        </div>
+      </div>
+
+      <!-- CAT FACT (Promise) -->
+      <div class="card" id="card-fact">
+        <div class="card-header">
+          <div class="card-meta">
+            <span class="tag tag-promise"><span class="dot"></span>Promise</span>
+            <h2>Cat Fact</h2>
+          </div>
+          <div class="card-actions">
+            <button class="icon-btn" id="fav-fact" title="Save to favorites">
+              <svg viewBox="0 0 24 24"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </button>
+            <button class="icon-btn" id="copy-fact" title="Copy">
+              <svg viewBox="0 0 24 24"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+            </button>
+            <button class="icon-btn" id="reload-fact" title="Reload">
+              <svg viewBox="0 0 24 24"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+            </button>
+            <div class="status-dot" id="status-fact"></div>
+          </div>
+        </div>
+        <div class="card-stats">
+          <div class="stat"><span class="stat-label">Fetches</span><span class="stat-value" id="count-fact">0</span></div>
+          <div class="stat"><span class="stat-label">Last ms</span><span class="stat-value" id="ms-fact">—</span></div>
+        </div>
+        <div class="card-body">
+          <div class="content-text" id="fact">
+            <div style="width:100%"><div class="skeleton"></div><div class="skeleton"></div></div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="source-label">catfact.ninja</span>
+          <span class="timestamp" id="ts-fact">—</span>
+        </div>
+      </div>
+
+      <!-- DOG (Async/Await) -->
+      <div class="card" id="card-dog">
+        <div class="card-header">
+          <div class="card-meta">
+            <span class="tag tag-async"><span class="dot"></span>Async / Await</span>
+            <h2>Random Dog</h2>
+          </div>
+          <div class="card-actions">
+            <button class="icon-btn" id="reload-dog" title="Reload">
+              <svg viewBox="0 0 24 24"><path d="M21 2v6h-6"/><path d="M3 12a9 9 0 0 1 15-6.7L21 8"/><path d="M3 22v-6h6"/><path d="M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+            </button>
+            <div class="status-dot" id="status-dog"></div>
+          </div>
+        </div>
+        <div class="card-stats">
+          <div class="stat"><span class="stat-label">Fetches</span><span class="stat-value" id="count-dog">0</span></div>
+          <div class="stat"><span class="stat-label">Last ms</span><span class="stat-value" id="ms-dog">—</span></div>
+        </div>
+        <div class="card-body">
+          <div class="breed-row">
+            <span class="breed-label">Breed</span>
+            <select class="breed-select" id="breed-select">
+              <option value="">— any breed —</option>
+            </select>
+          </div>
+          <div class="dog-wrapper">
+            <div class="dog-placeholder" id="dog-placeholder"><div class="skeleton-img"></div></div>
+            <img class="dog-image" id="dog-image" alt="" />
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="source-label">dog.ceo</span>
+          <span class="timestamp" id="ts-dog">—</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- ── FAVORITES ── -->
+    <div class="collapse-panel">
+      <div class="collapse-header" id="favHeader">
+        <div class="collapse-title">
+          ♥ Saved Favorites
+          <span class="badge-pill" id="favCount">0</span>
+        </div>
+        <svg class="chevron" id="favChevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="collapse-body" id="favBody">
+        <div class="fav-empty" id="favEmpty">No favorites yet — hit ♥ on a joke or cat fact to save it here.</div>
+        <div class="fav-list" id="favList"></div>
+      </div>
+    </div>
+
+    <!-- ── ACTIVITY LOG ── -->
+    <div class="collapse-panel">
+      <div class="collapse-header" id="logHeader">
+        <div class="collapse-title">
+          <span class="live-dot"></span>Activity Log
+        </div>
+        <svg class="chevron" id="logChevron" viewBox="0 0 24 24"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="collapse-body" id="logBody">
+        <div class="log-scroll" id="logScroll"></div>
+      </div>
+    </div>
+
+    <!-- ── PATTERN LEGEND ── -->
+    <div class="pattern-strip">
+      <div class="pattern-item">
+        <div class="pattern-num">1</div>
+        <div class="pattern-info">
+          <span class="pattern-name">Callback</span>
+          <span class="pattern-desc">Old-school XHR — passes a function to invoke once data arrives.</span>
+        </div>
+      </div>
+      <div class="pattern-item">
+        <div class="pattern-num">2</div>
+        <div class="pattern-info">
+          <span class="pattern-name">Promise</span>
+          <span class="pattern-desc">Chainable <code style="font-family:var(--font-mono);font-size:10px">.then()</code> / <code style="font-family:var(--font-mono);font-size:10px">.catch()</code> for cleaner flow control.</span>
+        </div>
+      </div>
+      <div class="pattern-item">
+        <div class="pattern-num">3</div>
+        <div class="pattern-info">
+          <span class="pattern-name">Async / Await</span>
+          <span class="pattern-desc">Syntactic sugar on Promises — reads like synchronous code.</span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+
+      /* ══ STATE ══ */
+      const counts   = { joke:0, fact:0, dog:0 };
+      const rawText  = { joke:'', fact:'' };
+      const favorites = [];
+      let autoInterval  = null;
+      let countdown     = 0;
+      let countdownTimer = null;
+      let breedsLoaded  = false;
+
+      /* ══ DOM ══ */
+      const jokeEl    = document.getElementById('joke');
+      const factEl    = document.getElementById('fact');
+      const dogImg    = document.getElementById('dog-image');
+      const dogPH     = document.getElementById('dog-placeholder');
+      const breedSel  = document.getElementById('breed-select');
+      const refreshBtn= document.getElementById('refresh');
+      const autoToggle= document.getElementById('autoToggle');
+      const iSel      = document.getElementById('intervalSelect');
+      const cdWrap    = document.getElementById('countdownWrap');
+      const cdFill    = document.getElementById('countdownFill');
+      const cdNum     = document.getElementById('countdownNum');
+      const toastEl   = document.getElementById('toast');
+      const favHeader = document.getElementById('favHeader');
+      const favBody   = document.getElementById('favBody');
+      const favChevron= document.getElementById('favChevron');
+      const favEmpty  = document.getElementById('favEmpty');
+      const favList   = document.getElementById('favList');
+      const favCount  = document.getElementById('favCount');
+      const logHeader = document.getElementById('logHeader');
+      const logBody   = document.getElementById('logBody');
+      const logChevron= document.getElementById('logChevron');
+      const logScroll = document.getElementById('logScroll');
+
+      const cards  = { joke: document.getElementById('card-joke'), fact: document.getElementById('card-fact'), dog: document.getElementById('card-dog') };
+      const stats  = { joke: document.getElementById('status-joke'), fact: document.getElementById('status-fact'), dog: document.getElementById('status-dog') };
+      const tss    = { joke: document.getElementById('ts-joke'), fact: document.getElementById('ts-fact'), dog: document.getElementById('ts-dog') };
+      const cntEls = { joke: document.getElementById('count-joke'), fact: document.getElementById('count-fact'), dog: document.getElementById('count-dog') };
+      const msEls  = { joke: document.getElementById('ms-joke'), fact: document.getElementById('ms-fact'), dog: document.getElementById('ms-dog') };
+
+      /* ══ HELPERS ══ */
+      function nowStr() {
+        return new Date().toLocaleTimeString([], { hour:'2-digit', minute:'2-digit', second:'2-digit' });
+      }
+
+      let toastTm;
+      function showToast(msg) {
+        toastEl.textContent = msg;
+        toastEl.classList.add('show');
+        clearTimeout(toastTm);
+        toastTm = setTimeout(() => toastEl.classList.remove('show'), 2200);
+      }
+
+      function addLog(badge, msg, ms) {
+        const el = document.createElement('div');
+        el.className = 'log-entry';
+        el.innerHTML = `
+          <span class="log-time">${nowStr()}</span>
+          <span class="log-badge ${badge}">${badge}</span>
+          <span class="log-msg">${msg}</span>
+          ${ms !== undefined ? `<span class="log-ms">${ms}ms</span>` : ''}
+        `;
+        logScroll.prepend(el);
+        while (logScroll.children.length > 60) logScroll.removeChild(logScroll.lastChild);
+      }
+
+      function setMs(key, ms) {
+        msEls[key].textContent = ms + 'ms';
+        msEls[key].className = 'stat-value ' + (ms < 400 ? 'fast' : ms > 1200 ? 'slow' : '');
+      }
+
+      /* ══ LOADING STATE ══ */
+      function setLoading(key) {
+        cards[key].classList.remove('loaded','error');
+        stats[key].className = 'status-dot loading';
+        if (key !== 'dog') {
+          const el = key === 'joke' ? jokeEl : factEl;
+          el.innerHTML = `<div style="width:100%"><div class="skeleton"></div><div class="skeleton"></div></div>`;
+          el.className = 'content-text';
+        }
+        addLog('start', `Fetching ${key}…`);
+      }
+
+      function setOk(key, html, plain, ms) {
+        cards[key].classList.add('loaded');
+        stats[key].className = 'status-dot ok';
+        tss[key].textContent = nowStr();
+        counts[key]++;
+        cntEls[key].textContent = counts[key];
+        setMs(key, ms);
+        if (key !== 'dog') {
+          rawText[key] = plain;
+          const el = key === 'joke' ? jokeEl : factEl;
+          el.innerHTML = html;
+          el.className = 'content-text loaded';
+          el.style.animation = 'slideIn 0.3s ease';
+          setTimeout(() => el.style.animation = '', 350);
+          // reset fav button active state if content changed
+          const favBtn = document.getElementById('fav-' + key);
+          if (favBtn) {
+            const already = favorites.some(f => f.text === plain);
+            favBtn.classList.toggle('active', already);
+          }
+        }
+        addLog('ok', `${key} loaded`, ms);
+      }
+
+      function setError(key, msg, ms) {
+        cards[key].classList.add('error');
+        stats[key].className = 'status-dot err';
+        tss[key].textContent = nowStr();
+        if (key !== 'dog') {
+          const el = key === 'joke' ? jokeEl : factEl;
+          el.textContent = '⚠ ' + msg;
+          el.className = 'content-text error';
+        }
+        addLog('err', `${key} error: ${msg}`, ms);
+      }
+
+      /* ══ FETCH FUNCTIONS ══ */
+      function fetchJoke(cb) {
+        const xhr = new XMLHttpRequest();
+        xhr.open('GET','https://official-joke-api.appspot.com/random_joke');
+        xhr.onload = () => xhr.status===200 ? cb(null, JSON.parse(xhr.responseText)) : cb('HTTP '+xhr.status);
+        xhr.onerror = () => cb('Network error');
+        xhr.send();
+      }
+
+      function fetchCatFact() {
+        return fetch('https://catfact.ninja/fact').then(r => {
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          return r.json();
+        });
+      }
+
+      async function fetchDogImage(breed) {
+        const url = breed
+          ? `https://dog.ceo/api/breed/${breed}/images/random`
+          : 'https://dog.ceo/api/breeds/image/random';
+        const r = await fetch(url);
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return (await r.json()).message;
+      }
+
+      async function loadBreeds() {
+        if (breedsLoaded) return;
+        try {
+          const r = await fetch('https://dog.ceo/api/breeds/list/all');
+          const d = await r.json();
+          Object.keys(d.message).sort().forEach(b => {
+            const opt = document.createElement('option');
+            opt.value = b;
+            opt.textContent = b.charAt(0).toUpperCase() + b.slice(1);
+            breedSel.appendChild(opt);
+          });
+          breedsLoaded = true;
+        } catch(e) {}
+      }
+
+      /* ══ LOADERS ══ */
+      function loadJoke() {
+        setLoading('joke');
+        const t0 = performance.now();
+        fetchJoke((err, joke) => {
+          const ms = Math.round(performance.now() - t0);
+          if (err) { setError('joke', err, ms); return; }
+          const plain = `${joke.setup} — ${joke.punchline}`;
+          const html = `<span>
+            <span style="display:block;margin-bottom:6px;color:var(--text)">${joke.setup}</span>
+            <em style="color:var(--amber);font-family:var(--font-display);font-size:17px">${joke.punchline}</em>
+          </span>`;
+          setOk('joke', html, plain, ms);
+        });
+      }
+
+      function loadCatFact() {
+        setLoading('fact');
+        const t0 = performance.now();
+        fetchCatFact()
+          .then(d => setOk('fact', d.fact, d.fact, Math.round(performance.now()-t0)))
+          .catch(e => setError('fact', e.message, Math.round(performance.now()-t0)));
+      }
+
+      async function loadDog() {
+        setLoading('dog');
+        const t0 = performance.now();
+        counts['dog']++;
+        cntEls['dog'].textContent = counts['dog'];
+        cards['dog'].classList.remove('loaded','error');
+        dogImg.classList.remove('visible');
+        dogImg.src = '';
+        dogPH.style.display = 'flex';
+        dogPH.innerHTML = '<div class="skeleton-img"></div>';
+
+        try {
+          const url = await fetchDogImage(breedSel.value);
+          dogImg.onload = () => {
+            const ms = Math.round(performance.now()-t0);
+            dogPH.style.display = 'none';
+            dogImg.classList.add('visible');
+            setOk('dog','','',ms);
+          };
+          dogImg.src = url;
+        } catch(e) {
+          const ms = Math.round(performance.now()-t0);
+          setError('dog', e.message, ms);
+          dogPH.innerHTML = `<span style="font-family:var(--font-mono);font-size:11px;color:var(--red)">⚠ ${e.message}</span>`;
+        }
+      }
+
+      function loadAll() { loadJoke(); loadCatFact(); loadDog(); }
+
+      /* ══ COPY ══ */
+      ['joke','fact'].forEach(key => {
+        document.getElementById('copy-'+key).addEventListener('click', () => {
+          if (!rawText[key]) { showToast('Nothing to copy yet'); return; }
+          navigator.clipboard.writeText(rawText[key]).then(() => showToast('Copied to clipboard!'));
+        });
+      });
+
+      /* ══ FAVORITES ══ */
+      function renderFavs() {
+        favCount.textContent = favorites.length;
+        if (!favorites.length) {
+          favEmpty.style.display = 'block';
+          favList.innerHTML = '';
+          return;
+        }
+        favEmpty.style.display = 'none';
+        favList.innerHTML = '';
+        favorites.forEach((f, i) => {
+          const item = document.createElement('div');
+          item.className = 'fav-item';
+          item.innerHTML = `<span class="fav-type">${f.type}</span><span class="fav-text">${f.text}</span><button class="fav-remove" data-i="${i}">×</button>`;
+          favList.appendChild(item);
+        });
+        favList.querySelectorAll('.fav-remove').forEach(btn => {
+          btn.addEventListener('click', () => {
+            const removed = favorites.splice(+btn.dataset.i, 1)[0];
+            // de-highlight fav button if same text is showing
+            ['joke','fact'].forEach(k => {
+              if (rawText[k] === removed.text) document.getElementById('fav-'+k).classList.remove('active');
+            });
+            renderFavs();
+          });
+        });
+      }
+
+      ['joke','fact'].forEach(key => {
+        const label = key === 'joke' ? 'Joke' : 'Cat Fact';
+        document.getElementById('fav-'+key).addEventListener('click', () => {
+          if (!rawText[key]) { showToast('Nothing to save yet'); return; }
+          const idx = favorites.findIndex(f => f.text === rawText[key]);
+          const btn = document.getElementById('fav-'+key);
+          if (idx > -1) {
+            favorites.splice(idx, 1);
+            btn.classList.remove('active');
+            showToast('Removed from favorites');
+          } else {
+            favorites.push({ type: label, text: rawText[key] });
+            btn.classList.add('active');
+            showToast('Saved to favorites ♥');
+            if (!favBody.classList.contains('open')) {
+              favBody.classList.add('open'); favChevron.classList.add('open');
+            }
+          }
+          renderFavs();
+        });
+      });
+
+      /* ══ COLLAPSE PANELS ══ */
+      [[favHeader, favBody, favChevron], [logHeader, logBody, logChevron]].forEach(([hdr, body, chev]) => {
+        hdr.addEventListener('click', () => { body.classList.toggle('open'); chev.classList.toggle('open'); });
+      });
+      // Open log by default
+      logBody.classList.add('open'); logChevron.classList.add('open');
+
+      /* ══ PER-CARD RELOAD ══ */
+      [['reload-joke', loadJoke], ['reload-fact', loadCatFact], ['reload-dog', loadDog]].forEach(([id, fn]) => {
+        const btn = document.getElementById(id);
+        btn.addEventListener('click', () => {
+          btn.classList.add('spinning');
+          fn();
+          setTimeout(() => btn.classList.remove('spinning'), 600);
+        });
+      });
+
+      /* ══ AUTO-REFRESH ══ */
+      const CIRC = 2 * Math.PI * 11;
+
+      function startCountdown(secs) {
+        countdown = secs;
+        cdWrap.classList.add('visible');
+        cdNum.textContent = countdown;
+        cdFill.style.strokeDashoffset = '0';
+        clearInterval(countdownTimer);
+        countdownTimer = setInterval(() => {
+          countdown--;
+          cdNum.textContent = countdown;
+          cdFill.style.strokeDashoffset = (1 - countdown / secs) * CIRC;
+          if (countdown <= 0) clearInterval(countdownTimer);
+        }, 1000);
+      }
+
+      function startAuto() {
+        const secs = parseInt(iSel.value);
+        clearInterval(autoInterval);
+        autoToggle.classList.add('active');
+        startCountdown(secs);
+        autoInterval = setInterval(() => { loadAll(); startCountdown(parseInt(iSel.value)); }, secs * 1000);
+      }
+
+      function stopAuto() {
+        clearInterval(autoInterval); clearInterval(countdownTimer);
+        autoInterval = null;
+        autoToggle.classList.remove('active');
+        cdWrap.classList.remove('visible');
+      }
+
+      autoToggle.addEventListener('click', () => autoInterval ? stopAuto() : startAuto());
+      iSel.addEventListener('change', () => { if (autoInterval) { stopAuto(); startAuto(); } });
+
+      /* ══ REFRESH ALL ══ */
+      refreshBtn.addEventListener('click', () => {
+        refreshBtn.classList.add('spinning'); refreshBtn.disabled = true;
+        loadAll();
+        setTimeout(() => { refreshBtn.classList.remove('spinning'); refreshBtn.disabled = false; }, 700);
+        if (autoInterval) startCountdown(parseInt(iSel.value));
+      });
+
+      /* ══ BREED SELECT ══ */
+      breedSel.addEventListener('change', loadDog);
+
+      /* ══ INIT ══ */
+      loadBreeds();
+      loadAll();
+    });
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Async JS Dashboard</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400&display=swap" rel="stylesheet" />
+
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+      :root {
+        --bg: #0d0d0f;
+        --surface: #141417;
+        --surface-2: #1c1c21;
+        --border: #2a2a32;
+        --border-light: #38383f;
+        --text: #e8e6e0;
+        --text-muted: #6b6b78;
+        --text-dim: #3f3f4a;
+        --amber: #e8a338;
+        --amber-glow: rgba(232, 163, 56, 0.12);
+        --amber-dim: rgba(232, 163, 56, 0.04);
+        --green: #4dba7f;
+        --red: #e05c5c;
+        --font-display: 'Playfair Display', Georgia, serif;
+        --font-mono: 'DM Mono', 'Courier New', monospace;
+        --font-body: 'DM Sans', sans-serif;
+      }
+
+      html { scroll-behavior: smooth; }
+
+      body {
+        font-family: var(--font-body);
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        padding: 0;
+        overflow-x: hidden;
+      }
+
+      /* ── NOISE TEXTURE OVERLAY ── */
+      body::before {
+        content: '';
+        position: fixed;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.035'/%3E%3C/svg%3E");
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* ── HEADER ── */
+      header {
+        position: relative;
+        padding: 64px 48px 48px;
+        border-bottom: 1px solid var(--border);
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        gap: 24px;
+        flex-wrap: wrap;
+        animation: fadeDown 0.6s ease both;
+      }
+
+      header::after {
+        content: '';
+        position: absolute;
+        bottom: -1px;
+        left: 0;
+        width: 120px;
+        height: 1px;
+        background: var(--amber);
+      }
+
+      .header-left {
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .eyebrow {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--amber);
+      }
+
+      h1 {
+        font-family: var(--font-display);
+        font-size: clamp(28px, 4vw, 48px);
+        font-weight: 700;
+        line-height: 1.1;
+        color: var(--text);
+        letter-spacing: -0.02em;
+      }
+
+      h1 em {
+        font-style: italic;
+        color: var(--amber);
+      }
+
+      .subtitle {
+        font-size: 13px;
+        color: var(--text-muted);
+        font-weight: 300;
+        margin-top: 4px;
+      }
+
+      /* ── REFRESH BUTTON ── */
+      .btn-refresh {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 12px 24px;
+        border: 1px solid var(--border-light);
+        background: transparent;
+        color: var(--text);
+        border-radius: 4px;
+        font-family: var(--font-mono);
+        font-size: 11px;
+        font-weight: 500;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        flex-shrink: 0;
+      }
+
+      .btn-refresh:hover {
+        border-color: var(--amber);
+        color: var(--amber);
+        background: var(--amber-dim);
+      }
+
+      .btn-refresh:active { transform: scale(0.97); }
+
+      .btn-refresh.spinning .icon-refresh { animation: spin 0.6s linear; }
+
+      .icon-refresh {
+        width: 14px;
+        height: 14px;
+        fill: none;
+        stroke: currentColor;
+        stroke-width: 2;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
+
+      /* ── GRID ── */
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 1px;
+        background: var(--border);
+        border-top: none;
+      }
+
+      /* ── CARD ── */
+      .card {
+        background: var(--surface);
+        padding: 40px;
+        display: flex;
+        flex-direction: column;
+        gap: 24px;
+        position: relative;
+        overflow: hidden;
+        opacity: 0;
+        animation: fadeUp 0.5s ease forwards;
+        transition: background 0.2s;
+        min-height: 280px;
+      }
+
+      .card:hover { background: var(--surface-2); }
+
+      .card:nth-child(1) { animation-delay: 0.1s; }
+      .card:nth-child(2) { animation-delay: 0.2s; }
+      .card:nth-child(3) { animation-delay: 0.3s; }
+
+      /* Accent line at top */
+      .card::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: var(--border);
+        transition: background 0.3s;
+      }
+
+      .card.loaded::before { background: var(--amber); }
+      .card.error::before { background: var(--red); }
+
+      /* ── CARD HEADER ── */
+      .card-header {
+        display: flex;
+        align-items: flex-start;
+        justify-content: space-between;
+        gap: 12px;
+      }
+
+      .card-meta {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+
+      .tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 5px;
+        font-family: var(--font-mono);
+        font-size: 9px;
+        font-weight: 500;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        padding: 3px 8px;
+        border-radius: 2px;
+        width: fit-content;
+      }
+
+      .tag-callback { background: rgba(77, 186, 127, 0.1); color: var(--green); }
+      .tag-promise  { background: rgba(232, 163, 56, 0.1); color: var(--amber); }
+      .tag-async    { background: rgba(100, 140, 220, 0.1); color: #7aa0e8; }
+
+      .tag .dot {
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: currentColor;
+        flex-shrink: 0;
+      }
+
+      .card h2 {
+        font-family: var(--font-display);
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--text);
+        line-height: 1.2;
+        letter-spacing: -0.01em;
+      }
+
+      .status-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--text-dim);
+        flex-shrink: 0;
+        margin-top: 4px;
+        transition: background 0.3s, box-shadow 0.3s;
+      }
+
+      .status-dot.loading {
+        background: var(--amber);
+        animation: pulse 1s ease-in-out infinite;
+      }
+
+      .status-dot.ok    { background: var(--green); box-shadow: 0 0 6px rgba(77,186,127,0.5); }
+      .status-dot.err   { background: var(--red);   box-shadow: 0 0 6px rgba(224,92,92,0.5); }
+
+      /* ── CONTENT AREA ── */
+      .card-body {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+      }
+
+      /* Text content */
+      .content-text {
+        font-size: 15px;
+        line-height: 1.7;
+        color: var(--text-muted);
+        font-weight: 300;
+        min-height: 80px;
+        display: flex;
+        align-items: center;
+        transition: color 0.3s;
+      }
+
+      .content-text.loaded { color: var(--text); }
+      .content-text.error  { color: var(--red); font-size: 13px; }
+
+      /* Skeleton shimmer */
+      .skeleton {
+        height: 14px;
+        border-radius: 3px;
+        background: linear-gradient(90deg, var(--border) 25%, var(--border-light) 50%, var(--border) 75%);
+        background-size: 200% 100%;
+        animation: shimmer 1.4s ease infinite;
+        margin-bottom: 10px;
+      }
+      .skeleton:last-child { width: 60%; margin-bottom: 0; }
+
+      /* Dog image */
+      .dog-wrapper {
+        width: 100%;
+        aspect-ratio: 16/9;
+        border-radius: 6px;
+        overflow: hidden;
+        background: var(--surface-2);
+        position: relative;
+      }
+
+      .dog-image {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        display: block;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+      }
+
+      .dog-image.visible { opacity: 1; }
+
+      .dog-placeholder {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .dog-placeholder svg { opacity: 0.15; }
+
+      /* ── FOOTER ── */
+      .card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        border-top: 1px solid var(--border);
+        padding-top: 16px;
+        margin-top: 4px;
+      }
+
+      .source-label {
+        font-family: var(--font-mono);
+        font-size: 9px;
+        color: var(--text-dim);
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+
+      .timestamp {
+        font-family: var(--font-mono);
+        font-size: 9px;
+        color: var(--text-dim);
+        letter-spacing: 0.06em;
+      }
+
+      /* ── PATTERN STRIP (full width below grid) ── */
+      .pattern-strip {
+        border-top: 1px solid var(--border);
+        padding: 32px 48px;
+        display: flex;
+        gap: 32px;
+        flex-wrap: wrap;
+        animation: fadeUp 0.5s 0.4s ease both;
+      }
+
+      .pattern-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        flex: 1;
+        min-width: 200px;
+      }
+
+      .pattern-num {
+        font-family: var(--font-display);
+        font-size: 36px;
+        font-weight: 700;
+        font-style: italic;
+        color: var(--border-light);
+        line-height: 1;
+        width: 32px;
+        flex-shrink: 0;
+      }
+
+      .pattern-info { display: flex; flex-direction: column; gap: 4px; }
+
+      .pattern-name {
+        font-family: var(--font-mono);
+        font-size: 10px;
+        font-weight: 500;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--text-muted);
+      }
+
+      .pattern-desc {
+        font-size: 12px;
+        color: var(--text-dim);
+        font-weight: 300;
+        line-height: 1.5;
+        max-width: 180px;
+      }
+
+      /* ── ANIMATIONS ── */
+      @keyframes fadeDown {
+        from { opacity: 0; transform: translateY(-16px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      @keyframes fadeUp {
+        from { opacity: 0; transform: translateY(16px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      @keyframes shimmer {
+        0%   { background-position: 200% 0; }
+        100% { background-position: -200% 0; }
+      }
+
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50%       { opacity: 0.3; }
+      }
+
+      @keyframes spin {
+        from { transform: rotate(0deg); }
+        to   { transform: rotate(360deg); }
+      }
+
+      @keyframes slideIn {
+        from { opacity: 0; transform: translateY(8px); }
+        to   { opacity: 1; transform: translateY(0); }
+      }
+
+      /* ── RESPONSIVE ── */
+      @media (max-width: 600px) {
+        header { padding: 40px 24px 32px; }
+        .card  { padding: 28px 24px; }
+        .pattern-strip { padding: 24px; }
+      }
+    </style>
+  </head>
+
+  <body>
+    <header>
+      <div class="header-left">
+        <span class="eyebrow">Live Feed</span>
+        <h1>Async <em>JavaScript</em><br>Dashboard</h1>
+        <p class="subtitle">Three async patterns — callback, promise, async/await — in the wild.</p>
+      </div>
+      <button class="btn-refresh" id="refresh">
+        <svg class="icon-refresh" viewBox="0 0 24 24">
+          <path d="M21 2v6h-6"/>
+          <path d="M3 12a9 9 0 0 1 15-6.7L21 8"/>
+          <path d="M3 22v-6h6"/>
+          <path d="M21 12a9 9 0 0 1-15 6.7L3 16"/>
+        </svg>
+        Refresh All
+      </button>
+    </header>
+
+    <div class="grid">
+
+      <!-- CARD 1: Callback -->
+      <div class="card" id="card-joke">
+        <div class="card-header">
+          <div class="card-meta">
+            <span class="tag tag-callback"><span class="dot"></span>Callback</span>
+            <h2>Random Joke</h2>
+          </div>
+          <div class="status-dot" id="status-joke"></div>
+        </div>
+        <div class="card-body">
+          <div class="content-text" id="joke">
+            <div style="width:100%">
+              <div class="skeleton"></div>
+              <div class="skeleton"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="source-label">official-joke-api.appspot.com</span>
+          <span class="timestamp" id="ts-joke">—</span>
+        </div>
+      </div>
+
+      <!-- CARD 2: Promise -->
+      <div class="card" id="card-fact">
+        <div class="card-header">
+          <div class="card-meta">
+            <span class="tag tag-promise"><span class="dot"></span>Promise</span>
+            <h2>Cat Fact</h2>
+          </div>
+          <div class="status-dot" id="status-fact"></div>
+        </div>
+        <div class="card-body">
+          <div class="content-text" id="fact">
+            <div style="width:100%">
+              <div class="skeleton"></div>
+              <div class="skeleton"></div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="source-label">catfact.ninja</span>
+          <span class="timestamp" id="ts-fact">—</span>
+        </div>
+      </div>
+
+      <!-- CARD 3: Async/Await -->
+      <div class="card" id="card-dog">
+        <div class="card-header">
+          <div class="card-meta">
+            <span class="tag tag-async"><span class="dot"></span>Async / Await</span>
+            <h2>Random Dog</h2>
+          </div>
+          <div class="status-dot" id="status-dog"></div>
+        </div>
+        <div class="card-body">
+          <div class="dog-wrapper">
+            <div class="dog-placeholder" id="dog-placeholder">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="1.5">
+                <circle cx="12" cy="12" r="10"/>
+                <path d="M8 14s1.5 2 4 2 4-2 4-2"/>
+                <line x1="9" y1="9" x2="9.01" y2="9"/>
+                <line x1="15" y1="9" x2="15.01" y2="9"/>
+              </svg>
+              <span style="font-family:var(--font-mono);font-size:10px;color:var(--text-dim);letter-spacing:.1em">Loading...</span>
+            </div>
+            <img class="dog-image" id="dog-image" alt="" />
+          </div>
+        </div>
+        <div class="card-footer">
+          <span class="source-label">dog.ceo</span>
+          <span class="timestamp" id="ts-dog">—</span>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Pattern legend -->
+    <div class="pattern-strip">
+      <div class="pattern-item">
+        <div class="pattern-num">1</div>
+        <div class="pattern-info">
+          <span class="pattern-name">Callback</span>
+          <span class="pattern-desc">Old-school XHR — passes a function to be called once data arrives.</span>
+        </div>
+      </div>
+      <div class="pattern-item">
+        <div class="pattern-num">2</div>
+        <div class="pattern-info">
+          <span class="pattern-name">Promise</span>
+          <span class="pattern-desc">Chainable <code style="font-family:var(--font-mono);font-size:10px">.then()</code> / <code style="font-family:var(--font-mono);font-size:10px">.catch()</code> for cleaner async flow.</span>
+        </div>
+      </div>
+      <div class="pattern-item">
+        <div class="pattern-num">3</div>
+        <div class="pattern-info">
+          <span class="pattern-name">Async / Await</span>
+          <span class="pattern-desc">Syntactic sugar on Promises — reads like synchronous code.</span>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+
+        /* ── HELPERS ── */
+
+        function now() {
+          return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
+        }
+
+        function setLoading(card, status, content) {
+          card.classList.remove('loaded', 'error');
+          status.className = 'status-dot loading';
+          content.innerHTML = `<div style="width:100%"><div class="skeleton"></div><div class="skeleton"></div></div>`;
+          content.className = 'content-text';
+        }
+
+        function setOk(card, status, content, html, ts) {
+          card.classList.add('loaded');
+          status.className = 'status-dot ok';
+          content.innerHTML = html;
+          content.className = 'content-text loaded';
+          content.style.animation = 'slideIn 0.35s ease';
+          ts.textContent = now();
+          setTimeout(() => content.style.animation = '', 400);
+        }
+
+        function setError(card, status, content, msg, ts) {
+          card.classList.add('error');
+          status.className = 'status-dot err';
+          content.textContent = '⚠ ' + msg;
+          content.className = 'content-text error';
+          ts.textContent = now();
+        }
+
+        /* ── DOM REFS ── */
+
+        const jokeEl     = document.getElementById('joke');
+        const factEl     = document.getElementById('fact');
+        const dogImg     = document.getElementById('dog-image');
+        const dogPH      = document.getElementById('dog-placeholder');
+        const refreshBtn = document.getElementById('refresh');
+
+        const cardJoke   = document.getElementById('card-joke');
+        const cardFact   = document.getElementById('card-fact');
+        const cardDog    = document.getElementById('card-dog');
+
+        const statusJoke = document.getElementById('status-joke');
+        const statusFact = document.getElementById('status-fact');
+        const statusDog  = document.getElementById('status-dog');
+
+        const tsJoke     = document.getElementById('ts-joke');
+        const tsFact     = document.getElementById('ts-fact');
+        const tsDog      = document.getElementById('ts-dog');
+
+        /* ── CALLBACK ── */
+
+        function fetchJoke(callback) {
+          const xhr = new XMLHttpRequest();
+          xhr.open('GET', 'https://official-joke-api.appspot.com/random_joke');
+          xhr.onload = () => {
+            if (xhr.status === 200) callback(null, JSON.parse(xhr.responseText));
+            else callback('Server returned ' + xhr.status);
+          };
+          xhr.onerror = () => callback('Network error');
+          xhr.send();
+        }
+
+        /* ── PROMISE ── */
+
+        function fetchCatFact() {
+          return fetch('https://catfact.ninja/fact').then(r => {
+            if (!r.ok) throw new Error('HTTP ' + r.status);
+            return r.json();
+          });
+        }
+
+        /* ── ASYNC / AWAIT ── */
+
+        async function fetchDogImage() {
+          const r = await fetch('https://dog.ceo/api/breeds/image/random');
+          if (!r.ok) throw new Error('HTTP ' + r.status);
+          const d = await r.json();
+          return d.message;
+        }
+
+        /* ── LOADERS ── */
+
+        function loadJoke() {
+          setLoading(cardJoke, statusJoke, jokeEl);
+          fetchJoke((err, joke) => {
+            if (err) {
+              setError(cardJoke, statusJoke, jokeEl, err, tsJoke);
+            } else {
+              const html = `<span style="display:block">
+                <strong style="color:var(--text);font-weight:400">${joke.setup}</strong>
+                <br><em style="color:var(--amber);font-family:var(--font-display);font-size:17px">${joke.punchline}</em>
+              </span>`;
+              setOk(cardJoke, statusJoke, jokeEl, html, tsJoke);
+            }
+          });
+        }
+
+        function loadCatFact() {
+          setLoading(cardFact, statusFact, factEl);
+          fetchCatFact()
+            .then(data => setOk(cardFact, statusFact, factEl, data.fact, tsFact))
+            .catch(err  => setError(cardFact, statusFact, factEl, err.message, tsFact));
+        }
+
+        async function loadDog() {
+          setLoading(cardDog, statusDog, { innerHTML: '' });  // reset text (not used for dog)
+          statusDog.className = 'status-dot loading';
+          cardDog.classList.remove('loaded', 'error');
+          dogImg.classList.remove('visible');
+          dogImg.src = '';
+          dogPH.style.display = 'flex';
+
+          try {
+            const url = await fetchDogImage();
+            dogImg.onload = () => {
+              dogPH.style.display = 'none';
+              dogImg.classList.add('visible');
+              cardDog.classList.add('loaded');
+              statusDog.className = 'status-dot ok';
+              tsDog.textContent = now();
+            };
+            dogImg.src = url;
+          } catch (err) {
+            cardDog.classList.add('error');
+            statusDog.className = 'status-dot err';
+            dogPH.innerHTML = `<span style="font-family:var(--font-mono);font-size:11px;color:var(--red)">⚠ ${err.message}</span>`;
+            tsDog.textContent = now();
+          }
+        }
+
+        /* ── LOAD ALL ── */
+
+        function loadAll() {
+          loadJoke();
+          loadCatFact();
+          loadDog();
+        }
+
+        loadAll();
+
+        /* ── REFRESH BUTTON ── */
+
+        refreshBtn.addEventListener('click', () => {
+          refreshBtn.classList.add('spinning');
+          refreshBtn.disabled = true;
+          loadAll();
+          setTimeout(() => {
+            refreshBtn.classList.remove('spinning');
+            refreshBtn.disabled = false;
+          }, 700);
+        });
+
+      });
+    </script>
+  </body>
+</html>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+ -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- <!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Fun Async Dashboard</title>
+
+    <style>
+      body {
+        font-family: Arial;
+        background: #f5f5f5;
+        padding: 40px;
+      }
+
+      .container {
+        max-width: 700px;
+        margin: auto;
+      }
+
+      .card {
+        background: white;
+        padding: 20px;
+        margin-bottom: 20px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      }
+
+      button {
+        padding: 10px 20px;
+        border: none;
+        background: #007bff;
+        color: white;
+        border-radius: 6px;
+        margin-bottom: 20px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background: #0056b3;
+      }
+
+      .loading {
+        color: gray;
+      }
+
+      img {
+        max-width: 100%;
+        max-height: 300px;
+        border-radius: 8px;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="container">
+      <h1>Async JavaScript Fun Dashboard</h1>
+
+      <button id="refresh">Refresh All</button>
+
+      <div class="card">
+        <h2>Random Joke (Callback)</h2>
+        <p id="joke" class="loading">Loading...</p>
+      </div>
+
+      <div class="card">
+        <h2>Cat Fact (Promise)</h2>
+        <p id="fact" class="loading">Loading...</p>
+      </div>
+
+      <div class="card">
+        <h2>Random Dog (Async/Await)</h2>
+        <img id="dog-image" />
+      </div>
+    </div>
+
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const jokeEl = document.getElementById("joke");
+        const factEl = document.getElementById("fact");
+        const dogImg = document.getElementById("dog-image");
+        const refreshBtn = document.getElementById("refresh");
+
+        /* ---------------- CALLBACK ---------------- */
+
+        function fetchJoke(callback) {
+          const xhr = new XMLHttpRequest();
+
+          xhr.open("GET", "https://official-joke-api.appspot.com/random_joke");
+
+          xhr.onload = function () {
+            if (xhr.status === 200) {
+              callback(null, JSON.parse(xhr.responseText));
+            } else {
+              callback("Failed to load joke");
+            }
+          };
+
+          xhr.send();
+        }
+
+        /* ---------------- PROMISE ---------------- */
+
+        function fetchCatFact() {
+          return fetch("https://catfact.ninja/fact").then((response) => {
+            if (!response.ok) {
+              throw new Error("Failed to fetch cat fact");
+            }
+
+            return response.json();
+          });
+        }
+
+        /* ---------------- ASYNC AWAIT ---------------- */
+
+        async function fetchDogImage() {
+          const response = await fetch(
+            "https://dog.ceo/api/breeds/image/random",
+          );
+
+          if (!response.ok) {
+            throw new Error("Failed to fetch dog");
+          }
+
+          const data = await response.json();
+
+          return data.message;
+        }
+
+        /* ---------------- LOAD DATA ---------------- */
+
+        function loadJoke() {
+          jokeEl.textContent = "Loading joke...";
+
+          fetchJoke((error, joke) => {
+            if (error) {
+              jokeEl.textContent = error;
+            } else {
+              jokeEl.textContent = `${joke.setup} — ${joke.punchline}`;
+            }
+          });
+        }
+
+        function loadCatFact() {
+          factEl.textContent = "Loading fact...";
+
+          fetchCatFact()
+            .then((data) => {
+              factEl.textContent = data.fact;
+            })
+
+            .catch((error) => {
+              factEl.textContent = error.message;
+            });
+        }
+
+        async function loadDog() {
+          dogImg.alt = "Loading dog...";
+
+          try {
+            const image = await fetchDogImage();
+
+            dogImg.src = image;
+          } catch (error) {
+            dogImg.alt = error.message;
+          }
+        }
+
+        /* ---------------- INITIAL LOAD ---------------- */
+
+        function loadAll() {
+          loadJoke();
+          loadCatFact();
+          loadDog();
+        }
+
+        loadAll();
+
+        /* ---------------- REFRESH BUTTON ---------------- */
+
+        refreshBtn.addEventListener("click", loadAll);
+      });
+    </script>
+  </body>
+</html> -->

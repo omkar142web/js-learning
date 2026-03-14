@@ -977,4 +977,47 @@
 //   }
 // });
 
+// let str = "Widget with id";
+// console.log(str.indexOf("id", 2));
+// let arr = [];
+// let ind = 0;
+// for (let i = 0; i < str.length; i++) {
+//   if (str.includes("id", i)) {
+//     ind = str.indexOf("id", i);
+//     if (!arr.includes(ind)) {
+//       arr.push(ind);
+//     }
+//   }
+// }
+
+// console.log(arr);
+
+// console.log('z'.codePointAt(0).toString(16))
+
+// let roll = "OP had a roll no 34 in std 10th";
+
+// let ind = roll.indexOf("roll");
+// console.log(ind);
+
+// console.log(roll.substr(ind, 7));
+// console.log(roll.slice(6, 4 ));
+// console.log(roll.substring( 6, 4));
+
+
+
+// let str = 'Widget with id';
+//  console.log(str.indexOf('id' ,12 ))
+
+
+// let str = "Widget with id";
+// console.log(str.indexOf("Widget"))
+// if (str.indexOf("Widget")) {
+//     console.log("We found it"); // doesn't work!
+// }
+
+// let p = document.querySelector("p");
+
+// console.dir(p)
+
+// p.innerHTML =  "<span><b>This is the new span content.</b></span>";
 
