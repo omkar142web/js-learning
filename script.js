@@ -1003,11 +1003,8 @@
 // console.log(roll.slice(6, 4 ));
 // console.log(roll.substring( 6, 4));
 
-
-
 // let str = 'Widget with id';
 //  console.log(str.indexOf('id' ,12 ))
-
 
 // let str = "Widget with id";
 // console.log(str.indexOf("Widget"))
@@ -1020,4 +1017,3 @@
 // console.dir(p)
 
 // p.innerHTML =  "<span><b>This is the new span content.</b></span>";
-
