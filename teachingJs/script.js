@@ -288,4 +288,9 @@ const javascriptCourse = {
   ],
 };
 
-let i = console.log(i);
+let i = javascriptCourse.sections[4].lessons[1].title  ;
+ console.log(i);
+
+for (const element of object) {
+    
+}
