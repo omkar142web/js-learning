@@ -150,7 +150,7 @@ const javascriptCourse = {
       lessons: [
         {
           title: "Methods of primitives",
-          Text: `• Overview of the Topic
+          Text: `• <b>Overview of the Topic</b>
 • Key Ideas and Explanations
 • Supporting Details and Examples
 • Final Thoughts and Observations
@@ -305,7 +305,259 @@ const javascriptCourse = {
   ],
 };
 
-// let i = javascriptCourse.sections[4].lessons[1].title  ;
-//  console.log(i);
+// let i = javascriptCourse.sections[4].lessons[1].Text  ;
+//  console.log(i );
+
+let changingHtmlOfInd_dot_text = javascriptCourse.sections[4].lessons  ;
+console.log(changingHtmlOfInd_dot_text );
+
+changingHtmlOfInd_dot_text[0].Text=`<main class="doc">
+
+  <!-- PAGE HEADER -->
+  <header class="doc-header">
+    <h1 class="doc-title">JavaScript Numbers</h1>
+    <p class="doc-description">
+      In modern JavaScript there are two types of numbers: regular numbers and BigInt.
+    </p>
+  </header>
+
+
+  <!-- NUMBER TYPES -->
+  <section class="doc-section" id="number-types">
+    <h2 class="section-title">Number Types</h2>
+
+    <article class="concept-block">
+      <h3 class="concept-title">Regular Numbers</h3>
+      <p class="concept-text">
+        JavaScript numbers are stored in <strong>64-bit IEEE-754 double precision format</strong>.
+      </p>
+    </article>
+
+    <article class="concept-block">
+      <h3 class="concept-title">BigInt</h3>
+      <p class="concept-text">
+        <code>BigInt</code> represents integers of arbitrary length and is used when numbers exceed
+        the safe integer range.
+      </p>
+    </article>
+  </section>
+
+
+  <!-- WRITING LARGE NUMBERS -->
+  <section class="doc-section" id="large-numbers">
+    <h2 class="section-title">Writing Large Numbers</h2>
+
+    <article class="example-block">
+      <h3 class="example-title">Underscore Separator</h3>
+
+      <pre class="code-block"><code>
+let billion = 1_000_000_000;
+      </code></pre>
+
+      <p class="example-note">
+        Underscores improve readability and are ignored by JavaScript.
+      </p>
+    </article>
+
+    <article class="example-block">
+      <h3 class="example-title">Scientific Notation</h3>
+
+      <pre class="code-block"><code>
+let billion = 1e9;
+let value = 7.3e9;
+      </code></pre>
+
+      <p class="example-note">
+        <code>e</code> multiplies the number by powers of 10.
+      </p>
+    </article>
+  </section>
+
+
+  <!-- SMALL NUMBERS -->
+  <section class="doc-section" id="small-numbers">
+    <h2 class="section-title">Writing Small Numbers</h2>
+
+    <pre class="code-block"><code>
+let microSecond = 1e-6;
+    </code></pre>
+
+    <p class="section-note">
+      Negative exponent divides the number by powers of 10.
+    </p>
+  </section>
+
+
+  <!-- NUMERAL SYSTEMS -->
+  <section class="doc-section" id="numeral-systems">
+    <h2 class="section-title">Hex, Binary and Octal</h2>
+
+    <article class="example-block">
+      <pre class="code-block"><code>
+let hex = 0xff;
+let binary = 0b11111111;
+let octal = 0o377;
+      </code></pre>
+    </article>
+  </section>
+
+
+  <!-- NUMBER BASE CONVERSION -->
+  <section class="doc-section" id="base-conversion">
+    <h2 class="section-title">Number Base Conversion</h2>
+
+    <article class="example-block">
+      <pre class="code-block"><code>
+let num = 255;
+
+num.toString(16); // ff
+num.toString(2);  // 11111111
+      </code></pre>
+    </article>
+
+    <article class="note-block">
+      <p>
+        The base can range from <strong>2 to 36</strong>.
+      </p>
+    </article>
+  </section>
+
+
+  <!-- ROUNDING -->
+  <section class="doc-section" id="rounding">
+    <h2 class="section-title">Rounding Methods</h2>
+
+    <table class="data-table">
+      <thead>
+        <tr>
+          <th>Method</th>
+          <th>Description</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Math.floor()</td>
+          <td>Rounds down</td>
+        </tr>
+        <tr>
+          <td>Math.ceil()</td>
+          <td>Rounds up</td>
+        </tr>
+        <tr>
+          <td>Math.round()</td>
+          <td>Rounds to nearest integer</td>
+        </tr>
+        <tr>
+          <td>Math.trunc()</td>
+          <td>Removes decimal part</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <article class="example-block">
+      <pre class="code-block"><code>
+Math.round(3.6);
+Math.floor(3.6);
+Math.ceil(3.1);
+Math.trunc(3.9);
+      </code></pre>
+    </article>
+  </section>
+
+
+  <!-- TOFIXED -->
+  <section class="doc-section" id="tofixed">
+    <h2 class="section-title">toFixed()</h2>
+
+    <pre class="code-block"><code>
+let num = 12.34;
+
+num.toFixed(1); // "12.3"
+num.toFixed(5); // "12.34000"
+    </code></pre>
+
+    <p class="section-note">
+      The result of <code>toFixed()</code> is a string.
+    </p>
+  </section>
+
+
+  <!-- PRECISION -->
+  <section class="doc-section" id="precision">
+    <h2 class="section-title">Floating Point Precision</h2>
+
+    <pre class="code-block"><code>
+0.1 + 0.2 === 0.3
+// false
+
+0.1 + 0.2
+// 0.30000000000000004
+    </code></pre>
+
+    <p class="section-note">
+      This happens because decimal fractions cannot always be represented exactly in binary.
+    </p>
+  </section>
+
+
+  <!-- NAN AND INFINITY -->
+  <section class="doc-section" id="special-values">
+    <h2 class="section-title">NaN and Infinity</h2>
+
+    <pre class="code-block"><code>
+isNaN("text"); 
+isFinite(123);
+Number.isNaN(NaN);
+Number.isFinite(10);
+    </code></pre>
+  </section>
+
+
+  <!-- PARSE FUNCTIONS -->
+  <section class="doc-section" id="parse-functions">
+    <h2 class="section-title">parseInt and parseFloat</h2>
+
+    <pre class="code-block"><code>
+parseInt("100px"); 
+parseFloat("12.5em");
+    </code></pre>
+
+    <article class="example-block">
+      <pre class="code-block"><code>
+parseInt("ff", 16); // 255
+parseInt("2n9c", 36); // 123456
+      </code></pre>
+    </article>
+  </section>
+
+
+  <!-- MATH OBJECT -->
+  <section class="doc-section" id="math-object">
+    <h2 class="section-title">Math Object</h2>
+
+    <pre class="code-block"><code>
+Math.random();
+Math.max(3, 5, 10);
+Math.min(1, 2);
+Math.pow(2, 10);
+    </code></pre>
+  </section>
+
+
+  <!-- SUMMARY -->
+  <section class="doc-section" id="summary">
+    <h2 class="section-title">Summary</h2>
+
+    <ul class="summary-list">
+      <li>Use <code>e</code> notation for large and small numbers.</li>
+      <li>JavaScript supports hex, binary and octal literals.</li>
+      <li>Use <code>toString(base)</code> for base conversion.</li>
+      <li>Use Math methods for rounding numbers.</li>
+      <li>Floating point arithmetic may lose precision.</li>
+      <li>Use <code>parseInt</code> and <code>parseFloat</code> for extracting numbers from strings.</li>
+    </ul>
+  </section>
+
+</main>`;
 
 export default javascriptCourse;

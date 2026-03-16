@@ -1,0 +1,262 @@
+:root {
+  --color-white: #fff;
+  --color-white-alpha-25: #ffffff40;
+  --color-white-alpha-75: #ffffffbf;
+  --color-black: #000;
+  --color-black-alpha-25: #00000040;
+  --color-black-alpha-75: #000000bf;
+  --color-gray-90: #f7f7f8;
+  --color-gray-80: #edeef0;
+  --color-gray-60: #c3c7cb;
+  --color-gray-40: #51565d;
+  --color-gray-20: #2d3034;
+  --color-gray-10: #212426;
+  --color-gray-05: #18191b;
+  --color-red-90: #ffe6ea;
+  --color-red-80: #fc7d92;
+  --color-red-50: #d31232;
+  --color-red-20: #b7102c;
+  --color-red-10: #4b0b16;
+  --color-orange-90: #fef3eb;
+  --color-orange-80: #febe8f;
+  --color-orange-50: #e2782c;
+  --color-orange-20: #c2570a;
+  --color-orange-10: #3f220d;
+  --color-yellow-90: #fef0c3;
+  --color-yellow-80: #fae49e;
+  --color-yellow-50: #e6b30a;
+  --color-yellow-20: #97770c;
+  --color-yellow-10: #574405;
+  --color-green-90: #eaf6ef;
+  --color-green-80: #70eba3;
+  --color-green-50: #089141;
+  --color-green-20: #065b29;
+  --color-green-10: #0c311c;
+  --color-blue-90: #ecf4fe;
+  --color-blue-80: #a4cefe;
+  --color-blue-50: #0a5dbd;
+  --color-blue-20: #044c9f;
+  --color-blue-10: #072446;
+  --color-purple-90: #f7f0ff;
+  --color-purple-80: #d8b8ff;
+  --color-purple-50: #863ae4;
+  --color-purple-40: #9a5cea;
+  --color-purple-30: #b487f0;
+  --color-purple-20: #5f1fad;
+  --color-purple-10: #260e43;
+
+  /* Backgrounds */
+  --bg-primary: #121212;
+  --bg-secondary: #1e1e1e;
+  --bg-tertiary: #2a2a2a;
+  --bg-harry: #0e121b;
+  --bg-chat: #212121;
+
+
+  /* Text */
+  --text-primary: #ffffff;
+  --text-secondary: #b3b3b3;
+  --text-muted: #808080;
+
+  /* Borders */
+  --border-color: #333333;
+
+  /* Accent colors */
+  --accent-blue: #3b82f6;
+  --accent-green: #22c55e;
+  --accent-red: #ef4444;
+  --accent-yellow: #facc15;
+  --accent-purple: #a855f7;
+  --accent-cyan: #06b6d4;
+  --accent-orange: #f97316;
+  --accent-pink: #ec4899;
+
+  /* UI States */
+  --success: #16a34a;
+  --warning: #eab308;
+  --error: #dc2626;
+  --info: #0284c7;
+
+  /* Hover colors */
+  --hover-light: rgba(255, 255, 255, 0.05);
+  --hover-strong: rgba(255, 255, 255, 0.1);
+
+  /* Shadow */
+  --shadow: rgba(0, 0, 0, 0.5);
+
+  /* borders */
+  --border-radius-six: 6px;
+}
+
+
+/* ---------------- GLOBAL RESET ---------------- */
+
+body {
+ 
+  line-height: 1.7;
+}
+
+/* ---------------- MAIN DOC CONTAINER ---------------- */
+
+.doc {
+  max-width: 850px;
+  margin: auto;
+  padding: 40px 25px 60px 25px;
+}
+
+/* ---------------- HEADER ---------------- */
+
+.doc-header {
+  margin-bottom: 50px;
+}
+
+.doc-title {
+  font-size: 42px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  letter-spacing: -1px;
+}
+
+.doc-description {
+  font-size: 18px;
+  color: var(--color-purple-50);
+}
+
+/* ---------------- SECTIONS ---------------- */
+
+.doc-section {
+  margin-bottom: 70px;
+}
+
+.section-title {
+  font-size: 28px;
+  margin-bottom: 20px;
+  font-weight: 650;
+}
+
+.section-note {
+  margin-top: 12px;
+  color: var(--color-red-80);
+  font-size: 15px;
+}
+
+/* ---------------- TEXT BLOCKS ---------------- */
+
+.concept-block {
+  margin-bottom: 20px;
+}
+
+.concept-title {
+  font-size: 20px;
+  margin-bottom: 6px;
+}
+
+.concept-text {
+  color: rgb(60, 138, 228);
+}
+
+/* ---------------- CODE BLOCK ---------------- */
+
+.code-block {
+  background: var(--bg-chat);
+  color: #f9fafb;
+  padding: 18px 20px;
+  border-radius: 10px;
+  overflow-x: auto;
+  font-size: 14px;
+  line-height: 1.6;
+  margin: 15px 0;
+}
+
+code {
+  font-family: "Fira Code", monospace;
+}
+
+/* ---------------- EXAMPLES ---------------- */
+
+.example-block {
+  margin-bottom: 30px;
+}
+
+.example-title {
+  font-size: 17px;
+  font-weight: 600;
+  margin-bottom: 10px;
+}
+
+.example-note {
+  color: var(--color-orange-80);
+  font-size: 14px;
+}
+
+/* ---------------- NOTE BOX ---------------- */
+
+.note-block {
+  background: var(--color-gray-20);
+  border-left: 4px solid #3b82f6;
+  padding: 14px 16px;
+  border-radius: 6px;
+  font-size: 15px;
+  margin-top: 10px;
+}
+
+/* ---------------- TABLE ---------------- */
+
+.data-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 25px 0;
+  font-size: 15px;
+}
+
+.data-table th {
+  text-align: left;
+  padding: 12px;
+  background: #f3f4f623;
+  font-weight: 600;
+}
+
+.data-table td {
+  padding: 12px;
+  border-top: 1px solid #e5e7eb;
+}
+
+/* ---------------- LIST ---------------- */
+
+.summary-list {
+  padding-left: 20px;
+}
+
+.summary-list li {
+  margin-bottom: 8px;
+}
+
+/* ---------------- INLINE CODE ---------------- */
+
+p code,
+li code {
+  /* background: #f3f4f6; */
+  padding: 3px 6px;
+  border-radius: 5px;
+  font-size: 90%;
+}
+
+/* ---------------- RESPONSIVE ---------------- */
+
+@media (max-width: 700px) {
+
+  .doc {
+    padding: 40px 20px;
+  }
+
+  .doc-title {
+    font-size: 32px;
+  }
+
+  .section-title {
+    font-size: 24px;
+  }
+
+}
+
+

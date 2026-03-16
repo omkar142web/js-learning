@@ -3,12 +3,14 @@ let datatypess = javascriptCourse.sections[4].lessons;
 let para = document.querySelector("p");
 let sections_dataTypes = document.querySelectorAll(".sections_dataTypes");
 
-para.innerText = datatypess[0].Text;
+para.innerHTML = datatypess[0].Text;
+
+sections_dataTypes[0].classList.add("active");
 
 sections_dataTypes.forEach((el, index) => {
   el.addEventListener("click", function () {
     console.log(datatypess[index].Text);
-    para.innerText = datatypess[index].Text;
+    para.innerHTML = datatypess[index].Text;
 
     // remove active from all
     sections_dataTypes.forEach((item) => {
