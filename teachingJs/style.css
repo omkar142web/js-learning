@@ -42,6 +42,8 @@
   --color-purple-90: #f7f0ff;
   --color-purple-80: #d8b8ff;
   --color-purple-50: #863ae4;
+  --color-purple-40: #9a5cea;
+  --color-purple-30: #b487f0;
   --color-purple-20: #5f1fad;
   --color-purple-10: #260e43;
 
@@ -95,7 +97,7 @@
 body {
   min-height: 100vh;
   font-family: poppins, sans-serif;
-  background-color: var(--bg-harry);
+  background-color: var(--bg-tertiary);
   color: var(--text-primary);
   font-size: 100%;
 
@@ -125,6 +127,7 @@ body {
   border: 2px solid var(--color-white-alpha-25);
   border-radius: var(--border-radius-six);
   padding: 1rem;
+  background-color: var(--bg-primary);
 }
 
 /* details */
@@ -149,7 +152,7 @@ details[open] summary {
   margin-bottom: 0.5em;
 }
 
-details >:last-child {
+details > :last-child {
   padding-bottom: 1rem;
   border-bottom: 1px solid #aaaaaa;
 }
@@ -159,3 +162,20 @@ details summary {
 }
 
 /* details ends */
+
+/* this is tempo. remove this hardcoded css part later */
+.sections_dataTypes {
+  transition: all 0.2s ease;
+  cursor: pointer;
+  padding: 0px 10px;
+  margin: 15px 0px;
+  border-left: 3px solid var(--color-white-alpha-25);
+
+}
+
+.sections_dataTypes:hover {
+  color: var(--accent-orange);
+  color: var(--color-purple-40);
+  font-weight: bold;
+}
+/* ends */
