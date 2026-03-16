@@ -1,5 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap');
-
+@import url("https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600&display=swap");
 
 :root {
   --color-white: #fff;
@@ -52,7 +51,6 @@
   --bg-tertiary: #2a2a2a;
   --bg-harry: #0e121b;
 
-
   /* Text */
   --text-primary: #ffffff;
   --text-secondary: #b3b3b3;
@@ -83,6 +81,9 @@
 
   /* Shadow */
   --shadow: rgba(0, 0, 0, 0.5);
+
+  /* borders */
+  --border-radius-six: 6px;
 }
 
 * {
@@ -91,24 +92,36 @@
   box-sizing: border-box;
 }
 
-
 body {
   min-height: 100vh;
   font-family: poppins, sans-serif;
   background-color: var(--bg-harry);
   color: var(--text-primary);
+  font-size: 100%;
 
+  padding: 40px 20px ; /*   for now, remove later after adding nav  */
 }
 
-/* .main {
-
-} */
-
-.main_aside{
- border: 1px solid var(--color-white-alpha-25) ;
+.main {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
-.main_article{
-    border: 1px solid var(--color-white-alpha-25) ;
+.main_aside {
+  width: min(350px, 90vw);
+}
 
+.main_article {
+  color: var(--text-primary);
+  flex-grow: 1;
+}
+
+.main_article,
+.main_aside {
+  border: 1px solid var(--color-white-alpha-25);
+  border-radius: var(--border-radius-six);
+  padding: 1rem;
 }
