@@ -292,6 +292,11 @@ const javascriptCourse = {
 //  console.log(i);
 
 
+let sections_dataTypes = document.querySelector(".sections_dataTypes");
+
 for (const element of javascriptCourse.sections[4].lessons) {
   console.log(element.title);
+  sections_dataTypes.innerText = element.title;
+
 }
+
