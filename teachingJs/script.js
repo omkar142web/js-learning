@@ -294,6 +294,5 @@ const javascriptCourse = {
 let obj = [3, 4, 5, 6, 7, 8];
 let i = 0;
 for (const element of obj) {
-  console.log(obj[i]);
-  i++;
+  console.log(element);
 }
