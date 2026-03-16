@@ -7,10 +7,16 @@ para.innerText = datatypess[0].Text;
 
 sections_dataTypes.forEach((el, index) => {
   el.addEventListener("click", function () {
-
     console.log(datatypess[index].Text);
     para.innerText = datatypess[index].Text;
 
+    // remove active from all
+    sections_dataTypes.forEach((item) => {
+      item.classList.remove("active");
+    });
+
+    // add active to clicked element
+    el.classList.add("active");
   });
 });
 

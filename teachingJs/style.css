@@ -179,14 +179,14 @@ details summary {
 
 .sections_dataTypes:hover {
   color: var(--accent-orange);
-  color: var(--color-purple-30);
+  color: var(--color-purple-80);
   font-weight: bold;
 }
 
-.active {
+.active,
+.active:hover {
     color: var(--color-purple-40);
     font-weight: bold;
-
 
 }
 
