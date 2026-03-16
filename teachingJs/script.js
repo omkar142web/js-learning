@@ -293,6 +293,7 @@ const javascriptCourse = {
 
 let sections_dataTypes = document.querySelector(".sections_dataTypes");
 let main = document.querySelector(".main");
+let main_aside = document.querySelector(".main_aside");
 
 for (const element of javascriptCourse.sections[4].lessons) {
   console.log(element.title);
@@ -302,5 +303,5 @@ for (const element of javascriptCourse.sections[4].lessons) {
 
   section.innerText = element.title;
 
-  main.append(section);
+  main_aside.append(section);
 }
