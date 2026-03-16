@@ -7,7 +7,8 @@
 }
 
 body {
-  background: rgb(102, 102, 102);
+  background: #333;
+  color: white;
   min-height: 100vh;
   /* background: linear-gradient(135deg, #9bb2e5, #698cbf); */
 
@@ -151,7 +152,7 @@ a {
 }
 
 .po::before {
-  content: "👉 ";
+  content: "⌛ ";
 }
 
 #btnn {
@@ -213,4 +214,84 @@ a {
   display: flex;
   flex-direction: column;
   align-items: center;
+}
+
+input {
+  margin-bottom: 20px;
+  margin-left: 20px;
+  height: 38px;
+  width: 200px;
+  border-radius: 3px;
+  outline: none;
+  border: none;
+  padding: 10px;
+  font-size: 16px;
+
+}
+
+input:active {
+  border: 1px solid #2b3a4a;
+}
+
+
+
+/* CSS */
+button {
+  min-width: 160px;
+  margin: 10px;
+  margin-top: 0;
+  margin-left: 20px;
+  padding: 15px 30px;
+  text-align: center;
+  text-transform: uppercase;
+  transition: 0.25s;
+  background-size: 200% auto;
+  color: white;
+  border-radius: 10px;
+  /* display: block; */
+  border: 0px;
+  font-weight: 700;
+  box-shadow: 0px 0px 14px -7px #f09819;
+  background-image: linear-gradient(45deg, #FF512F 0%, #F09819  51%, #FF512F  100%);
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+  touch-action: manipulation;
+}
+
+button:hover {
+  background-position: right center;
+  /* change the direction of the change here */
+  color: #fff;
+  text-decoration: none;
+}
+
+button:active {
+  transform: scale(0.95);
+}
+
+.p{
+  font-size: 25px;
+  font-weight: bold;
+
+}
+
+.hide {
+  display: none;
+}
+
+#msg {
+  margin: 20px;
+  max-width: 400px;
+  text-align: center;
+  padding: 10px;
+  border: 2px solid #004103;
+  border-radius: 5px;
+  background-color: #00ff3752;
+  color: rgba(255, 255, 255, 0.829);
+  text-transform: capitalize;
+  font-size: large;
+  font-weight: bold;
+  
+  
 }

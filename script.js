@@ -1,3 +1,5 @@
+"use strict";
+
 // console.log('first clg');
 
 // const { cloneElement } = require("react");
@@ -1017,3 +1019,174 @@
 // console.dir(p)
 
 // p.innerHTML =  "<span><b>This is the new span content.</b></span>";
+
+// 🔻     🔻     🔻     🔻     🔻     🔻     
+// let t = document.querySelector(".title");
+// let p = document.querySelector("p");
+// let inp = document.querySelector("input");
+// let inps = document.querySelectorAll("input");
+// let btn = document.querySelector("button");
+// let msg = document.querySelector("#msg");
+// let audio = document.querySelector("audio");
+
+// // console.log(inps.length);
+// let sec = 0;
+// let min = 0;
+// let hour = 0;
+// let seconds = 0;
+// let second_cap = 0;
+// for (let i = 0; i < inps.length; i++) {
+//   inps[i].addEventListener("input", function () {
+//     if (i == 0) {
+//       console.log(`Seconds = ${inps[i].value}`);
+//       sec = +inps[i].value;
+//     }
+//     if (i == 1) {
+//       console.log(`Mins = ${inps[i].value}`);
+//       min = +inps[i].value;
+//       //   console.log(typeof min);
+//     }
+//     if (i == 2) {
+//       console.log(`Hours = ${inps[i].value}`);
+//       hour = +inps[i].value;
+//     }
+//     // console.log(hour);
+//     if (hour < 0) hour = 0;
+//     if (min < 0) min = 0;
+//     if (sec < 0) sec = 0;
+//     if (!(hour < 0) && !(min < 0) && !(sec < 0)) {
+//       seconds = hour * 3600 + min * 60 + sec;
+//     }
+
+//     second_cap = seconds;
+//     finished(null);
+
+//     // calltimerfromloop(seconds);
+//   });
+// }
+
+// function pause() {
+//   btn.click();
+//   btn.click();
+// }
+
+// // seconds = 3595;
+
+// let increnment_sel = false;
+
+// // console.log(seconds)
+// // ! function
+// action_teller(increnment_sel);
+// btn.addEventListener("click", function () {
+//   if (increnment_sel) {
+//     increnment_sel = false;
+//   } else {
+//     increnment_sel = true;
+//     console.log("increnment_sel");
+//   }
+
+//   action_teller(increnment_sel);
+//   reseter();
+//   finished(null);
+//   audio.pause();
+// });
+
+// // ! function
+// function reseter() {
+//   //   console.log(second_cap);
+//   seconds = second_cap;
+// }
+
+// // ! function
+// function action_teller(increnment_sel) {
+//   if (increnment_sel) {
+//     btn.innerText = "Stop Watch";
+//   } else {
+//     btn.innerText = "Count Down";
+//   }
+// }
+
+// // ! function
+// let pause1;
+// setInterval(function () {
+//     pause1 = true;
+//     console.log('activ')
+// },10000);
+// setInterval(function () {
+//     pause1 = false;
+//     console.log('activ')
+// },20000);
+// // // todo setInterval
+// setInterval(function () {
+//   if (seconds <= 0) {
+//     seconds = 0;
+//     formatter(seconds);
+//     return;
+//   }
+
+//   if (pause1){
+//     return
+//   }
+
+//   formatter(seconds);
+//   if (increnment_sel) {
+//     seconds++;
+//   } else {
+//     seconds--;
+//     console.log(seconds);
+//     if (seconds == 0) finished(1);
+//   }
+// }, 1000);
+
+// // ! function
+// function finished(add) {
+//   setTimeout(() => {
+//     if (!add) {
+//       msg.classList.add("hide");
+//       audio.pause();
+//     }
+//   }, 0);
+//   setTimeout(() => {
+//     if (add) {
+//       msg.classList.remove("hide");
+//       audio.play();
+//     }
+//   }, 1000);
+// }
+
+// // ! function
+// function formatter(seconds) {
+//   let sec = 0;
+//   let min = 0;
+//   let hour = 0;
+//   let col = " : ";
+//   let act = 0;
+
+//   sec = seconds % 60;
+//   min = Math.floor((seconds / 60) % 60);
+//   hour = Math.floor(seconds / 3600);
+
+//   if (sec < 10 || min < 10 || hour > 0) {
+//     if (sec < 10) sec = "0" + sec;
+//     if (min < 10) min = "0" + min;
+//     if (hour < 10) hour = "0" + hour;
+//   }
+
+//   if (hour > 0) act = hour + col + min + col + sec;
+//   else act = min + col + sec;
+
+//   t_changer(act);
+// }
+
+// // ! function
+// function t_changer(formatted_act) {
+//   t.innerText = formatted_act;
+//   p.innerText = formatted_act;
+// }
+// 🔻     🔻     🔻     🔻     🔻     🔻     
+
+
+// let num = 34.559;
+// console.log(num.toFixed(1))
+
+
