@@ -50,6 +50,8 @@
   --bg-primary: #121212;
   --bg-secondary: #1e1e1e;
   --bg-tertiary: #2a2a2a;
+  --bg-harry: #0e121b;
+
 
   /* Text */
   --text-primary: #ffffff;
@@ -93,8 +95,10 @@
 body {
   min-height: 100vh;
   font-family: poppins, sans-serif;
-  background-color: var(--bg-secondary);
+  background-color: var(--bg-harry);
   color: var(--text-primary);
 
 }
+
+
 
