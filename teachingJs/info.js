@@ -1,8 +1,18 @@
-import javascriptCourse from './script.js';
+import javascriptCourse from "./script.js";
 let datatypess = javascriptCourse.sections[4].lessons;
 let para = document.querySelector("p");
+let sections_dataTypes = document.querySelectorAll(".sections_dataTypes");
 
 para.innerText = datatypess[0].Text;
+
+sections_dataTypes.forEach((el, index) => {
+  el.addEventListener("click", function () {
+
+    console.log(datatypess[index].Text);
+    para.innerText = datatypess[index].Text;
+
+  });
+});
 
 // para.innerText = `• Overview of the Topic
 // • Key Ideas and Explanations

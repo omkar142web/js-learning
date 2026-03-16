@@ -1,6 +1,6 @@
 import javascriptCourse from './script.js';
 
-let sections_dataTypes = document.querySelector(".sections_dataTypes");
+let sections_dataTypes = document.querySelectorAll(".sections_dataTypes");
 let main = document.querySelector(".main");
 let main_aside = document.querySelector(".main_aside");
 
