@@ -1,3 +1,5 @@
+import javascriptCourse from './script.js';
+
 let para = document.querySelector("p");
 
 para.innerText = `• Overview of the Topic
