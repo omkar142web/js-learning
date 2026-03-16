@@ -291,8 +291,7 @@ const javascriptCourse = {
 // let i = javascriptCourse.sections[4].lessons[1].title  ;
 //  console.log(i);
 
-let obj = [3, 4, 5, 6, 7, 8];
-let i = 0;
-for (const element of obj) {
-  console.log(element);
+
+for (const element of javascriptCourse.sections[4].lessons) {
+  console.log(element.title);
 }
