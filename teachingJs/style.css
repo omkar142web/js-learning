@@ -99,7 +99,7 @@ body {
   color: var(--text-primary);
   font-size: 100%;
 
-  padding: 40px 20px ; /*   for now, remove later after adding nav  */
+  padding: 40px 20px; /*   for now, remove later after adding nav  */
 }
 
 .main {
@@ -111,12 +111,13 @@ body {
 }
 
 .main_aside {
-  width: min(350px, 90vw);
+  min-width: min(300px, 90vw);
 }
 
 .main_article {
   color: var(--text-primary);
   flex-grow: 1;
+  width: min(450px, 90vw);
 }
 
 .main_article,
