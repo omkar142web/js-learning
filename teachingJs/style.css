@@ -111,7 +111,7 @@ body {
 }
 
 .main_aside {
-  min-width: min(300px, 90vw);
+  width: min(300px, 95vw);
 }
 
 .main_article {
@@ -147,6 +147,15 @@ details[open] {
 details[open] summary {
   border-bottom: 1px solid #aaaaaa;
   margin-bottom: 0.5em;
+}
+
+details >:last-child {
+  padding-bottom: 1rem;
+  border-bottom: 1px solid #aaaaaa;
+}
+
+details summary {
+  cursor: pointer;
 }
 
 /* details ends */
