@@ -1,12 +1,12 @@
 const javascriptCourse = {
   title: "JavaScript Complete Guide",
   slug: "javascript-complete-guide",
-  description: "A structured learning path covering JavaScript from fundamentals to advanced browser APIs.",
+  description:
+    "A structured learning path covering JavaScript from fundamentals to advanced browser APIs.",
   level: "beginner-to-advanced",
   progress: 0,
 
   sections: [
-
     {
       id: "intro",
       title: "An Introduction",
@@ -18,10 +18,11 @@ const javascriptCourse = {
           slug: "introduction-to-javascript",
           difficulty: "beginner",
           duration: "10 min",
-          description: "Overview of JavaScript, its history, and where it runs.",
+          description:
+            "Overview of JavaScript, its history, and where it runs.",
           examples: [],
           quiz: [],
-          completed: false
+          completed: false,
         },
         {
           title: "Manuals and specifications",
@@ -29,7 +30,7 @@ const javascriptCourse = {
           difficulty: "beginner",
           examples: [],
           quiz: [],
-          completed: false
+          completed: false,
         },
         {
           title: "Code editors",
@@ -37,7 +38,7 @@ const javascriptCourse = {
           difficulty: "beginner",
           examples: [],
           quiz: [],
-          completed: false
+          completed: false,
         },
         {
           title: "Developer console",
@@ -45,35 +46,68 @@ const javascriptCourse = {
           difficulty: "beginner",
           examples: [],
           quiz: [],
-          completed: false
-        }
-      ]
+          completed: false,
+        },
+      ],
     },
 
     {
       id: "fundamentals",
       title: "JavaScript Fundamentals",
-      description: "Core language concepts required for every JavaScript developer.",
+      description:
+        "Core language concepts required for every JavaScript developer.",
 
       lessons: [
         { title: "Hello, world!", slug: "hello-world", completed: false },
         { title: "Code structure", slug: "code-structure", completed: false },
-        { title: 'The modern mode, "use strict"', slug: "use-strict", completed: false },
+        {
+          title: 'The modern mode, "use strict"',
+          slug: "use-strict",
+          completed: false,
+        },
         { title: "Variables", slug: "variables", completed: false },
         { title: "Data types", slug: "data-types", completed: false },
-        { title: "Interaction: alert, prompt, confirm", slug: "interaction", completed: false },
-        { title: "Type Conversions", slug: "type-conversion", completed: false },
-        { title: "Basic operators, maths", slug: "operators", completed: false },
+        {
+          title: "Interaction: alert, prompt, confirm",
+          slug: "interaction",
+          completed: false,
+        },
+        {
+          title: "Type Conversions",
+          slug: "type-conversion",
+          completed: false,
+        },
+        {
+          title: "Basic operators, maths",
+          slug: "operators",
+          completed: false,
+        },
         { title: "Comparisons", slug: "comparisons", completed: false },
-        { title: "Conditional branching: if, '?'", slug: "if-else", completed: false },
-        { title: "Logical operators", slug: "logical-operators", completed: false },
-        { title: "Nullish coalescing operator '??'", slug: "nullish-coalescing", completed: false },
+        {
+          title: "Conditional branching: if, '?'",
+          slug: "if-else",
+          completed: false,
+        },
+        {
+          title: "Logical operators",
+          slug: "logical-operators",
+          completed: false,
+        },
+        {
+          title: "Nullish coalescing operator '??'",
+          slug: "nullish-coalescing",
+          completed: false,
+        },
         { title: "Loops: while and for", slug: "loops", completed: false },
         { title: "The switch statement", slug: "switch", completed: false },
         { title: "Functions", slug: "functions", completed: false },
-        { title: "Function expressions", slug: "function-expressions", completed: false },
-        { title: "Arrow functions", slug: "arrow-functions", completed: false }
-      ]
+        {
+          title: "Function expressions",
+          slug: "function-expressions",
+          completed: false,
+        },
+        { title: "Arrow functions", slug: "arrow-functions", completed: false },
+      ],
     },
 
     {
@@ -88,8 +122,8 @@ const javascriptCourse = {
         { title: "Comments", slug: "comments" },
         { title: "Ninja code", slug: "ninja-code" },
         { title: "Automated testing with Mocha", slug: "mocha-testing" },
-        { title: "Polyfills and transpilers", slug: "polyfills-transpilers" }
-      ]
+        { title: "Polyfills and transpilers", slug: "polyfills-transpilers" },
+      ],
     },
 
     {
@@ -103,8 +137,11 @@ const javascriptCourse = {
         { title: 'Constructor, operator "new"', slug: "constructor-new" },
         { title: "Optional chaining '?.'", slug: "optional-chaining" },
         { title: "Symbol type", slug: "symbol-type" },
-        { title: "Object to primitive conversion", slug: "object-to-primitive" }
-      ]
+        {
+          title: "Object to primitive conversion",
+          slug: "object-to-primitive",
+        },
+      ],
     },
 
     {
@@ -122,8 +159,8 @@ const javascriptCourse = {
         { title: "Object.keys, values, entries" },
         { title: "Destructuring assignment" },
         { title: "Date and time" },
-        { title: "JSON methods, toJSON" }
-      ]
+        { title: "JSON methods, toJSON" },
+      ],
     },
 
     {
@@ -141,8 +178,8 @@ const javascriptCourse = {
         { title: "Scheduling: setTimeout and setInterval" },
         { title: "Decorators and forwarding, call/apply" },
         { title: "Function binding" },
-        { title: "Arrow functions revisited" }
-      ]
+        { title: "Arrow functions revisited" },
+      ],
     },
 
     {
@@ -153,8 +190,8 @@ const javascriptCourse = {
         { title: "Prototypal inheritance" },
         { title: "F.prototype" },
         { title: "Native prototypes" },
-        { title: "Prototype methods" }
-      ]
+        { title: "Prototype methods" },
+      ],
     },
 
     {
@@ -168,8 +205,8 @@ const javascriptCourse = {
         { title: "Private and protected properties" },
         { title: "Extending built-in classes" },
         { title: 'Class checking: "instanceof"' },
-        { title: "Mixins" }
-      ]
+        { title: "Mixins" },
+      ],
     },
 
     {
@@ -184,8 +221,8 @@ const javascriptCourse = {
         { title: "Promise API" },
         { title: "Promisification" },
         { title: "Microtasks" },
-        { title: "Async/await" }
-      ]
+        { title: "Async/await" },
+      ],
     },
 
     {
@@ -194,8 +231,8 @@ const javascriptCourse = {
       lessons: [
         { title: "Modules introduction" },
         { title: "Export and Import" },
-        { title: "Dynamic imports" }
-      ]
+        { title: "Dynamic imports" },
+      ],
     },
 
     {
@@ -203,7 +240,6 @@ const javascriptCourse = {
       title: "Browser: Document, Events, Interfaces",
 
       subsections: [
-
         {
           title: "Document",
           lessons: [
@@ -213,8 +249,8 @@ const javascriptCourse = {
             { title: "Searching: querySelector" },
             { title: "Node properties" },
             { title: "Attributes and properties" },
-            { title: "Modifying the document" }
-          ]
+            { title: "Modifying the document" },
+          ],
         },
 
         {
@@ -224,8 +260,8 @@ const javascriptCourse = {
             { title: "Bubbling and capturing" },
             { title: "Event delegation" },
             { title: "Browser default actions" },
-            { title: "Dispatching custom events" }
-          ]
+            { title: "Dispatching custom events" },
+          ],
         },
 
         {
@@ -234,8 +270,8 @@ const javascriptCourse = {
             { title: "Mouse events" },
             { title: "Pointer events" },
             { title: "Keyboard events" },
-            { title: "Scrolling" }
-          ]
+            { title: "Scrolling" },
+          ],
         },
 
         {
@@ -244,11 +280,12 @@ const javascriptCourse = {
             { title: "Form properties and methods" },
             { title: "focus and blur" },
             { title: "input and change events" },
-            { title: "submit event" }
-          ]
-        }
-      ]
-    }
-
-  ]
+            { title: "submit event" },
+          ],
+        },
+      ],
+    },
+  ],
 };
+
+let i = console.log(i);
