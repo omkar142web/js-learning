@@ -190,3 +190,20 @@ details summary {
 }
 
 /* ends */
+
+.outer {
+  position: fixed;
+  bottom: 70px;
+  right: 40px;
+  z-index: 10;
+  background-color: var(--bg-tertiary);
+  height: 35px;
+  width: 35px;
+  border-radius: 50%;
+}
+
+.inner {
+  position: relative;
+  left: 10px;
+  top: 4px;
+}
